@@ -2,18 +2,19 @@ package motor;
 
 import jm.JMC;
 import jm.music.data.Note;
+import jm.music.data.Phrase;
 import jm.util.Play;
+import jm.util.View;
+import jm.music.tools.*;
 
-public class Pista {
+public class Pista extends Thread {
 	
-	/*public static void main (String[] args)
+	public static void main (String[] args)
 	{
 		//C2 a C7
-		Note note= new Note();
-		note.setPitch(JMC.c6);
-	   
-		Play.midi(note);
-		
-	}*/
+	    Piano p = new Piano();
+	    p.imp();
+	    p.repro();
+	}
 
 }
