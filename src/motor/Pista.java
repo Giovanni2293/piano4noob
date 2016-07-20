@@ -12,9 +12,8 @@ public class Pista extends Thread {
 	public static void main (String[] args)
 	{
 		//C2 a C7
-	    Piano p = new Piano();
-	    p.imp();
-	    p.repro();
+	    Reproduccion p = new Reproduccion();
+	    p.play();
 	}
 
 }

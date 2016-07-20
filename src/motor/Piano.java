@@ -9,27 +9,28 @@ import jm.util.Play;
 public class Piano {
 
 	private List<Tecla> teclas ;
+	private static Piano piano;
     private String[][] natural = {{"C","CS","D","DS","E","F","FS","G","GS","A","AS","B"}
     ,{"Do","DoS","Re","ReS","Mi","Fa","FaS","Sol","SolS","La","LaS","Si"}};
 	
 	
 	
-	public Piano() {
+	private Piano() {
 		teclas = new ArrayList();
-		iniciarPiano();
+		construirPiano();
 	}
 
-	public void repro()
+	public static Piano getPiano()
 	{
-		Phrase phr = new Phrase();
-	    for (Tecla t : teclas)
+		if (piano==null)
 		{
-	    	phr.addNote(t.getSonido()); 
+		    piano = new Piano();
 		}
-	    Play.midi(phr);
+		
+		return  piano;
 	}
 
-	private void iniciarPiano()
+	private void construirPiano()
 	{
 		String nombre,nat;
 		Tecla tecla;
@@ -39,7 +40,7 @@ public class Piano {
 			for (int h = 0 ; h<12; h++)
 			{
 				nombre = natural[0][h]+i;
-				nat = natural[1][h];
+				nat = natural[1][h]+i;
 				tecla = new Tecla(nombre,cod,nat);
 				cod++;
 				teclas.add(tecla);
@@ -50,6 +51,18 @@ public class Piano {
 		teclas.add(tecla);
 		
 		}
+	
+	public Tecla getTecla(String nota)
+	{
+		for (Tecla t : teclas)
+		{
+			if (nota.equals(t.getNombreNatural()))
+				return t;
+		}
+		
+		return null;
+		
+	}
 	
 	public void imp()
 	{

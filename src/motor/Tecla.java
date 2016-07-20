@@ -16,11 +16,6 @@ public class Tecla {
 		nombreNatural = n;
 		this.nota = nota;
 	}
-	
-	public void run()
-	{
-		Play.midi(sonido);
-	}
 
 	public String getNota() {
 		return nota;
