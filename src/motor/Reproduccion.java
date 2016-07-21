@@ -1,6 +1,7 @@
 package motor;
 import jm.music.data.Phrase;
 import jm.util.Play;
+import jm.music.data.Score;
 
 import utilidad.MediadorHR;
 
@@ -17,9 +18,11 @@ public class Reproduccion {
 		this.piano = Piano.getPiano();
 	}
 	
-	public static void play(String n)
+	public void play(String n)
 	{
 		String nota = n;
-		Play.midi(piano.getTecla(nota).getSonido());
+		//Play.midi(piano.getTecla(nota).getSonido());
+		 Play.midiCycle(piano.getTecla(nota).getSonido());
+	     Play.stopMidiCycle();
 	}
 }
