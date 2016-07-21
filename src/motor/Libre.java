@@ -18,7 +18,7 @@ public class Libre implements KeyListener{
 	{
 		construirFrame();
 		f.addKeyListener(this);
-		r = new Reproduccion();
+		r = r.getRepro();
 	}
 	
 	public void construirFrame()
@@ -42,11 +42,23 @@ public class Libre implements KeyListener{
 		// TODO Auto-generated method stub
 		l.setText(e.getKeyText(e.getKeyCode()));
 		switch (e.getKeyText(e.getKeyCode())) {
-		case "A":
-			r.play("Sol2");
+		case "Q":
+			r.play("Do2");
 			break;
-		case "B":
-			r.play("La2");
+		case "2":
+			r.play("DoS2");
+			break;
+		case "3":
+			r.play("ReS2");
+			break;
+		case "W":
+			r.play("Re2");
+			break;
+		case "E":
+			r.play("Mi2");
+			break;
+		case "O":
+			r.play("Sol4");
 			break;
 
 		default:
@@ -58,7 +70,8 @@ public class Libre implements KeyListener{
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+		r.Stop();
+		r.setTemp("");
 	}
 
 }

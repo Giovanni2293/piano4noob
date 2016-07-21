@@ -15,7 +15,7 @@ public class Tecla {
 	public Tecla(String nota , int l ,String n) {
 		sonido = new Note();
 		sonido.setPitch(l);
-		sonido.setDuration(100);//duracion de la nota
+		sonido.setLength(6);//duracion de la nota
 		nombreNatural = n;
 		this.nota = nota;
 	}

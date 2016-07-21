@@ -10,9 +10,11 @@ public class Reproduccion {
 	private static Piano piano;
 	private MediadorHR m;
 	private int velocidad;
+	private static String temp = "";
+	private static Reproduccion repro;
 	
 	
-	public Reproduccion()
+	private Reproduccion()
 	{
 		//this.piano = piano;
 		this.piano = Piano.getPiano();
@@ -20,9 +22,29 @@ public class Reproduccion {
 	
 	public void play(String n)
 	{
+		if(temp != n ){
 		String nota = n;
 		//Play.midi(piano.getTecla(nota).getSonido());
+		
 		 Play.midiCycle(piano.getTecla(nota).getSonido());
 	     Play.stopMidiCycle();
+	     temp = nota;
+	     
+		}
+	     
+	}
+	public void Stop(){
+		Play.stopMidi();
+	}
+	
+	public static void setTemp(String temp) {
+		Reproduccion.temp = temp;
+	}
+
+	public static Reproduccion getRepro(){
+		if (repro == null){
+			repro = new Reproduccion();
+		}
+		return repro;
 	}
 }
