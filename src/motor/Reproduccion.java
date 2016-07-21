@@ -17,8 +17,9 @@ public class Reproduccion {
 		this.piano = Piano.getPiano();
 	}
 	
-	public static void play()
+	public static void play(String n)
 	{
-		Play.midi(piano.getTecla("Do4").getSonido());
+		String nota = n;
+		Play.midi(piano.getTecla(nota).getSonido());
 	}
 }

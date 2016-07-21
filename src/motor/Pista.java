@@ -13,7 +13,7 @@ public class Pista extends Thread {
 	{
 		//C2 a C7
 	    Reproduccion p = new Reproduccion();
-	    p.play();
+	  //  p.play();
 	}
 
 }
