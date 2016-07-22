@@ -36,12 +36,10 @@ public class Libre implements KeyListener{
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		l.setText(e.getKeyText(e.getKeyCode()));
-		switch (e.getKeyText(e.getKeyCode())) {
+	
+	public void selectTecla(String s)
+	{
+		switch (s) {
 		case "Q":
 			r.play("Do2");
 			break;
@@ -64,7 +62,14 @@ public class Libre implements KeyListener{
 		default:
 			break;
 		}
+	}
 	
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		l.setText(e.getKeyText(e.getKeyCode()));
+		selectTecla(e.getKeyText(e.getKeyCode()));
 	}
 
 	@Override
