@@ -9,11 +9,6 @@ import jm.music.tools.*;
 
 public class Pista extends Thread {
 	
-	public static void main (String[] args)
-	{
-		//C2 a C7
-	    Libre l = new Libre();
-	  //  p.play();
-	}
+	
 
 }
