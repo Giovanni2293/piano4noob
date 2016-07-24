@@ -10,8 +10,8 @@ public class Piano {
 
 	private List<Tecla> teclas ;
 	private static Piano piano;
-    private String[][] natural = {{"F","FS","G","GS","A","AS","B","C","CS","D","DS","E"}
-    ,{"Fa","FaS","Sol","SolS","La","LaS","Si","Do","DoS","Re","ReS","Mi"}};
+    private String[][] natural = {{"C","CS","D","DS","E","F","FS","G","GS","A","AS","B"}
+    ,{"Do","DoS","Re","ReS","Mi","Fa","FaS","Sol","SolS","La","LaS","Si"}};
 	
 	
 	
@@ -34,8 +34,8 @@ public class Piano {
 	{
 		String nombre,nat;
 		Tecla tecla;
-		int cod=41;
-		for (int i = 2 ; i<5 ; i++)
+		int cod=36;
+		for (int i = 2 ; i<7 ; i++)
 		{
 			for (int h = 0 ; h<12; h++)
 			{
@@ -47,9 +47,9 @@ public class Piano {
 			}
 			
 		}
-		tecla = new Tecla("C5",73,"Do5");
+		tecla = new Tecla("C7",96,"Do7");
 		teclas.add(tecla);
-		System.out.println();
+		
 		}
 	
 	public Tecla getTecla(String nota)
@@ -75,3 +75,4 @@ public class Piano {
 		
 	}
 }
+

@@ -33,9 +33,7 @@ public class Reproduccion {
 		}
 	     
 	}
-	public void Stop(){
-		Play.stopMidi();
-	}
+	
 	
 	public static void setTemp(String temp) {
 		Reproduccion.temp = temp;
