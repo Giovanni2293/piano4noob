@@ -16,7 +16,7 @@ public class Reproduccion {
 	private static Piano piano; //Es un objeto unico que inicializa las teclas y sus respectivos sonidos 
 	private MediadorHR m;  //Ejecuta la logica del hilo que se usa en este proceso
 	private int velocidad;  //Parametro que se usara para reproduccion de pistas(Aun no esta en uso)
-	private static String temp = ""; //se usa en el metodo play de esta clase
+	private static String temp = ""; //una variable que ayuda a simular la pulsación de la tecla, es usada en Libre
 	private static Reproduccion repro; //El objeto piano cumple el patron singleton por lo tanto este parametro se refiere a un objeto statico
 	
 	
