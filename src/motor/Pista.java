@@ -1,5 +1,7 @@
 package motor;
 
+import java.util.Scanner;
+
 import jm.JMC;
 import jm.music.data.Note;
 import jm.music.data.Phrase;
@@ -8,14 +10,32 @@ import jm.util.Play;
 import jm.util.View;
 import jm.music.tools.*;
 
-public class Pista extends Thread {
+public class Pista {
 	
 	private Note n;
 	private Phrase p;
 	
 	public Pista(){
-		
-		
+	}
+	
+	public void selector(int n)
+	{
+		String status = "";
+		switch (n) {
+		case 1:
+			estrellita();
+			status="estrellita";
+			break;
+		case 2:
+			lilium();
+			status="lilium";
+			break;
+		default:
+			status="Pista inexistente. La lista de pistas actual es 1 (estrellita) y 2 (lilium)";
+			break;
+		}
+		System.out.println("");
+		System.out.print("Reproduciendo: " + status);
 	}
 	
 	public void estrellita(){
@@ -111,17 +131,14 @@ public class Pista extends Thread {
 		
 		
 	
-		View.notate(p);
-		
-		//Play.midi(p);
+		//View.notate(p);
+		Play.midi(p);
 	}
-
 	public void lilium(){
-		
-		
 		Play.mid("src\\multimedia\\lilium.midi");
-		
 	}
-	
-	
+	public void detener()
+	{
+		Play.stopMidi();
+	}
 }
