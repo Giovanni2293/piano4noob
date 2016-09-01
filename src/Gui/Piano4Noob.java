@@ -11,7 +11,9 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import javax.swing.border.LineBorder;
 
-
+import jm.JMC;
+import jm.music.data.Note;
+import jm.music.data.Rest;
 import jm.util.Play;
 import motor.Reproduccion;
 import utilidad.STecla;
@@ -78,7 +80,8 @@ public class Piano4Noob implements KeyListener{
 		
 		l = new JLabel("");
 		panel.add(l, BorderLayout.SOUTH);
-		
+		 Play.midiCycle(new Rest(JMC.HALF_NOTE)); //La clase Play pertenece a la libreria JMusic, el metodo midiCycle reproduce el sonido de la nota
+	     Play.stopMidiCycle();//metodo de la clase Play que se encaarga de detener la reproducion iniciada en midiCycle
 
 	}
 	/**
