@@ -80,8 +80,8 @@ public class Piano4Noob implements KeyListener{
 		
 		l = new JLabel("");
 		panel.add(l, BorderLayout.SOUTH);
-		 Play.midiCycle(new Rest(JMC.HALF_NOTE)); //La clase Play pertenece a la libreria JMusic, el metodo midiCycle reproduce el sonido de la nota
-	     Play.stopMidiCycle();//metodo de la clase Play que se encaarga de detener la reproducion iniciada en midiCycle
+		Play.midiCycle(new Rest(JMC.HALF_NOTE)); //La clase Play pertenece a la libreria JMusic, el metodo midiCycle reproduce el sonido de la nota
+	    Play.stopMidiCycle();//metodo de la clase Play que se encaarga de detener la reproducion iniciada en midiCycle
 
 	}
 	/**
@@ -99,8 +99,9 @@ public class Piano4Noob implements KeyListener{
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		//l.setText(e.getKeyText(e.getKeyCode())); //Reemplaza el contenido de la etiqueta la gui por el simbolo de la tecla presionada
-		l.setText(stec.getNota());
+		
 		stec.selectTecla(e.getKeyText(e.getKeyCode())); //Segun la tecla presionada se reproduce un sonido en respuesta
+		l.setText(stec.getNota());
 	}
 	/**
      * Metodo de la interfaz KeyListener reescrito para detener la reproducion de un sonido
@@ -111,5 +112,6 @@ public class Piano4Noob implements KeyListener{
 		// TODO Auto-generated method stub
 		
 		r.setTemp("");
+		
 	}
 }
