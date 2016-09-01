@@ -1,5 +1,7 @@
 package motor;
+import jm.music.data.Note;
 import jm.music.data.Phrase;
+import jm.music.data.Rest;
 import jm.util.Play;
 import jm.music.data.Score;
 
@@ -35,6 +37,7 @@ public class Reproduccion {
 		 Play.midiCycle(piano.getTecla(nota).getSonido()); //La clase Play pertenece a la libreria JMusic, el metodo midiCycle reproduce el sonido de la nota
 	     Play.stopMidiCycle();//metodo de la clase Play que se encaarga de detener la reproducion iniciada en midiCycle
 	     temp = nota;
+	     
 	     
 		}
 	     

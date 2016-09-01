@@ -5,7 +5,7 @@ import java.util.Scanner;
  * @Autor: Flores - Pereira - Prada
  * @version: 24/07/2016
  */
-public class Piano4Noob {
+public class ClasePrincipal {
 	/**
 	 * Despliega en consola un menu en el cual se puede ir al modo libre o al Reproductor de pistas
 	 * @param args
