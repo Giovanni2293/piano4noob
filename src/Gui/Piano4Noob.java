@@ -19,6 +19,7 @@ import jm.music.data.Rest;
 import jm.util.Play;
 import motor.Reproduccion;
 import sun.misc.PerformanceLogger;
+import utilidad.BotonTecla;
 import utilidad.STecla;
 
 import java.awt.Color;
@@ -28,6 +29,9 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.JMenuBar;
@@ -36,7 +40,7 @@ import javax.swing.JMenuItem;
 import java.awt.Panel;
 import java.awt.Font;
 
-public class Piano4Noob implements KeyListener {
+public class Piano4Noob implements KeyListener , MouseListener {
 
 	private JFrame frmPianonoobs;
 	JLabel etiquetaDeEstado;
@@ -87,7 +91,7 @@ public class Piano4Noob implements KeyListener {
 		int anchoDePantalla = (int) screenSize.getWidth() - 50;
 		frmPianonoobs.addKeyListener(this);// Le asocia el Escuchador de eventos de
 									// teclados a la ventana
-		frmPianonoobs.setBounds(100, 100, 0 + anchoDePantalla, 550);
+		frmPianonoobs.setBounds(100, 100,0 + anchoDePantalla, 550);
 		
 
 		frmPianonoobs.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -121,11 +125,12 @@ public class Piano4Noob implements KeyListener {
 		panelDeTeclado.setLayout(null);
 		
 		
-		JButton Fa3 = new JButton("F3");
-		Fa3.setBounds(0, 0, 0 + anchoParaBotones, 240);
+		BotonTecla Fa3 = new BotonTecla("F3","Q");
+		Fa3.addMouseListener(this);
+		Fa3.addKeyListener(this);
+		Fa3.setBounds(0, 0,0 +anchoParaBotones, 240);
 		Fa3.setForeground(Color.DARK_GRAY);
 		Fa3.setBackground(UIManager.getColor("Button.highlight"));
-		Fa3.setEnabled(false);
 		Fa3.setVerticalAlignment(SwingConstants.BOTTOM);
 		panelDeTeclado.add(Fa3);
 		
@@ -192,5 +197,43 @@ public class Piano4Noob implements KeyListener {
 
 		r.setTemp("");
 
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getSource() instanceof BotonTecla)//prevencion. clases anonimas > otras
+		{
+			BotonTecla b = (BotonTecla)e.getSource();
+			stec.selectTecla(b.getTecla()); //Segun la tecla presionada se reproduce un sonido en respuesta
+			etiquetaDeEstado.setText(stec.getNota());
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getSource() instanceof BotonTecla)
+		{
+			r.setTemp("");
+		}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
