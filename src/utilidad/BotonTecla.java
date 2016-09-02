@@ -8,6 +8,7 @@ public class BotonTecla extends JButton{
 	{
 		super(nombre);
 		this.tecla=tecla;
+		
 	}
 	public String getTecla() {
 		return tecla;

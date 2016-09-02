@@ -21,6 +21,7 @@ import motor.Reproduccion;
 import sun.misc.PerformanceLogger;
 import utilidad.BotonTecla;
 import utilidad.STecla;
+import utilidad.UbicarTeclas;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -48,7 +49,7 @@ public class Piano4Noob implements KeyListener , MouseListener {
 	private Reproduccion r; // Elemento necesario para reproducir los sonidos de
 							// las teclas del piano que se accionan, las cuales
 							// estan asociadas al teclado
-
+	private UbicarTeclas guiTeclado;
 	/**
 	 * Launch the application.
 	 */
@@ -112,8 +113,26 @@ public class Piano4Noob implements KeyListener , MouseListener {
 
 		JPanel panelDeControles = new JPanel();
 		panelContenedor.add(panelDeControles);
-		panelDeControles.setBackground(Color.WHITE);
-		panelDeControles.setBorder(new LineBorder(Color.RED, 3));
+		panelDeControles.setBackground(Color.LIGHT_GRAY);
+		panelDeControles.setLayout(null);
+		
+		JPanel panelDificultad = new JPanel();
+		panelDificultad.setBounds(1000, 34, 250, 174);
+		panelDeControles.add(panelDificultad);
+		
+		JPanel difucultad = new JPanel();
+		difucultad.setBackground(Color.DARK_GRAY);
+		difucultad.setBounds(300, 65, 650, 143);
+		panelDeControles.add(difucultad);
+		
+		JPanel aciertos = new JPanel();
+		aciertos.setBounds(100, 34, 150, 80);
+		panelDeControles.add(aciertos);
+		
+		JPanel errores = new JPanel();
+		errores.setBounds(100, 128, 150, 80);
+		panelDeControles.add(errores);
+		
 
 		JPanel panelDeTeclado = new JPanel();
 		panelContenedor.add(panelDeTeclado);
@@ -121,18 +140,35 @@ public class Piano4Noob implements KeyListener , MouseListener {
 		
 	
 		// Tamaño para botones // Apartir de aquí agregar botones
-		int anchoParaBotones = anchoDePantalla / 19;
+		int anchoParaBotones = (anchoDePantalla - 40) / 19;
 		panelDeTeclado.setLayout(null);
 		
+		JButton bordeIzquierdo = new JButton("");
+		bordeIzquierdo.setEnabled(false);
+		bordeIzquierdo.setBackground(Color.LIGHT_GRAY);
+		bordeIzquierdo.setBounds(0, 0, 20, 240);
+		bordeIzquierdo.setBorder(null);
+		panelDeTeclado.add(bordeIzquierdo);
 		
-		BotonTecla Fa3 = new BotonTecla("F3","Q");
-		Fa3.addMouseListener(this);
-		Fa3.addKeyListener(this);
-		Fa3.setBounds(0, 0,0 +anchoParaBotones, 240);
-		Fa3.setForeground(Color.DARK_GRAY);
-		Fa3.setBackground(UIManager.getColor("Button.highlight"));
-		Fa3.setVerticalAlignment(SwingConstants.BOTTOM);
-		panelDeTeclado.add(Fa3);
+		
+		guiTeclado = new UbicarTeclas(anchoParaBotones, 240, this);
+		BotonTecla[] Teclas = new BotonTecla[19];
+		Teclas = guiTeclado.getArPiano();
+		for(int i=0;i<=18 ; i++){
+			panelDeTeclado.add(Teclas[i]);
+		}
+		
+		
+		JButton bordeDerecho = new JButton("");
+		bordeDerecho.setEnabled(false);
+		bordeDerecho.setBackground(Color.LIGHT_GRAY);
+		bordeDerecho.setBounds(1290, 0, 20, 240);
+		bordeDerecho.setBorder(null);
+		panelDeTeclado.add(bordeDerecho);
+		
+		
+		
+		
 		
 		
 
