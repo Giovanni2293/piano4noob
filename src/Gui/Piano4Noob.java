@@ -9,6 +9,8 @@ import java.awt.FlowLayout;
 import javax.swing.border.CompoundBorder;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
+
 import javax.swing.border.LineBorder;
 
 import jm.JMC;
@@ -16,30 +18,36 @@ import jm.music.data.Note;
 import jm.music.data.Rest;
 import jm.util.Play;
 import motor.Reproduccion;
+import sun.misc.PerformanceLogger;
 import utilidad.BotonTecla;
 import utilidad.STecla;
 
 import java.awt.Color;
+import java.awt.Dimension;
+
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JPasswordField;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import java.awt.Panel;
 import java.awt.Font;
-public class Piano4Noob implements KeyListener , MouseListener{
 
-	private JFrame frame;
-    private STecla stec;
-    private BotonTecla btnNewButton_1;
-    private JLabel lblEstado;
-	private Reproduccion r; //Elemento necesario para reproducir los sonidos de las teclas del piano que se accionan, las cuales estan asociadas al teclado
+public class Piano4Noob implements KeyListener , MouseListener {
 
+	private JFrame frmPianonoobs;
+	JLabel etiquetaDeEstado;
+	private STecla stec;
+	private Reproduccion r; // Elemento necesario para reproducir los sonidos de
+							// las teclas del piano que se accionan, las cuales
+							// estan asociadas al teclado
 
 	/**
 	 * Launch the application.
@@ -49,7 +57,9 @@ public class Piano4Noob implements KeyListener , MouseListener{
 			public void run() {
 				try {
 					Piano4Noob window = new Piano4Noob();
-					window.frame.setVisible(true);
+				
+					window.frmPianonoobs.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -62,90 +72,147 @@ public class Piano4Noob implements KeyListener , MouseListener{
 	 */
 	public Piano4Noob() {
 		initialize();
+		frmPianonoobs.setLocationRelativeTo(null);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		r = r.getRepro(); //Devuelve un objeto unico de tipo Reproduccion
+		r = r.getRepro(); // Devuelve un objeto unico de tipo Reproduccion
+
+		stec = new STecla();
+		frmPianonoobs = new JFrame();
+		frmPianonoobs.setTitle("Piano4Noobs");
+		frmPianonoobs.setAutoRequestFocus(false);
+		frmPianonoobs.setResizable(false);
+		Toolkit t = Toolkit.getDefaultToolkit();
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int anchoDePantalla = (int) screenSize.getWidth() - 50;
+		frmPianonoobs.addKeyListener(this);// Le asocia el Escuchador de eventos de
+									// teclados a la ventana
+		frmPianonoobs.setBounds(100, 100,0 + anchoDePantalla, 550);
 		
-        stec = new STecla();
-		frame = new JFrame();
-//Le asocia el Escuchador de eventos de teclados a la ventana
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new GridLayout(2, 1, 0, 0));
+
+		frmPianonoobs.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmPianonoobs.getContentPane().setLayout(new BorderLayout(0, 0));
+
+		JMenuBar menuBar = new JMenuBar();
+		frmPianonoobs.getContentPane().add(menuBar, BorderLayout.NORTH);
+
+		JMenu Archivo = new JMenu("Archivo");
+		menuBar.add(Archivo);
+
+		JMenuItem abrir = new JMenuItem("Abrir");
+		Archivo.add(abrir);
+
+		JPanel panelContenedor = new JPanel();
+		frmPianonoobs.getContentPane().add(panelContenedor);
+		panelContenedor.setLayout(new GridLayout(2, 0, 0, 0));
+
+		JPanel panelDeControles = new JPanel();
+		panelContenedor.add(panelDeControles);
+		panelDeControles.setBackground(Color.WHITE);
+		panelDeControles.setBorder(new LineBorder(Color.RED, 3));
+
+		JPanel panelDeTeclado = new JPanel();
+		panelContenedor.add(panelDeTeclado);
+		panelDeTeclado.setBackground(Color.WHITE);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(Color.WHITE);
-		panel_1.setBorder(new LineBorder(Color.RED, 3));
-		frame.getContentPane().add(panel_1);
+	
+		// Tamaño para botones // Apartir de aquí agregar botones
+		int anchoParaBotones = anchoDePantalla / 19;
+		panelDeTeclado.setLayout(null);
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.WHITE);
-		panel.setBorder(new LineBorder(new Color(0, 0, 0), 3));
-		frame.getContentPane().add(panel);
-		panel.setLayout(null);
 		
-		btnNewButton_1 = new BotonTecla("Fa3","Q");
-		btnNewButton_1.addKeyListener(this);
-		btnNewButton_1.addMouseListener(this);
-		btnNewButton_1.setBounds(317, 55, 91, 23);
-		panel.add(btnNewButton_1);
+		BotonTecla Fa3 = new BotonTecla("F3","Q");
+		Fa3.addMouseListener(this);
+		Fa3.addKeyListener(this);
+		Fa3.setBounds(0, 0,0 +anchoParaBotones, 240);
+		Fa3.setForeground(Color.DARK_GRAY);
+		Fa3.setBackground(UIManager.getColor("Button.highlight"));
+		Fa3.setVerticalAlignment(SwingConstants.BOTTOM);
+		panelDeTeclado.add(Fa3);
 		
-		lblEstado = new JLabel("Estado");
-		lblEstado.setBounds(34, 59, 46, 14);
-		panel.add(lblEstado);
-		Play.midiCycle(new Rest(JMC.HALF_NOTE)); //La clase Play pertenece a la libreria JMusic, el metodo midiCycle reproduce el sonido de la nota
-	    Play.stopMidiCycle();//metodo de la clase Play que se encaarga de detener la reproducion iniciada en midiCycle
+		
+
+		Panel panelDeEstado = new Panel();
+		FlowLayout fl_panelDeEstado = (FlowLayout) panelDeEstado.getLayout();
+		fl_panelDeEstado.setVgap(1);
+		fl_panelDeEstado.setHgap(2);
+		fl_panelDeEstado.setAlignment(FlowLayout.LEADING);
+		frmPianonoobs.getContentPane().add(panelDeEstado, BorderLayout.SOUTH);
+
+		etiquetaDeEstado = new JLabel(" ");
+		panelDeEstado.add(etiquetaDeEstado);
+		etiquetaDeEstado.setFont(new Font("Arial", Font.PLAIN, 10));
+		etiquetaDeEstado.setBackground(Color.LIGHT_GRAY);
+		etiquetaDeEstado.setVerticalAlignment(SwingConstants.BOTTOM);
+		etiquetaDeEstado.setHorizontalAlignment(SwingConstants.LEFT);
+
+		Play.midiCycle(new Rest(JMC.HALF_NOTE)); // La clase Play pertenece a la
+													// libreria JMusic, el
+													// metodo midiCycle
+													// reproduce el sonido de la
+													// nota
+		Play.stopMidiCycle();// metodo de la clase Play que se encaarga de
+								// detener la reproducion iniciada en midiCycle
 
 	}
+
 	/**
-	 * Metodo de la interfaz KeyListener en este caso simplemente no se reescribio
+	 * Metodo de la interfaz KeyListener en este caso simplemente no se
+	 * reescribio
 	 */
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 	}
+
 	/**
-     * Metodo de la interfaz KeyListener reescrito para manejar el texto de la etiqueda de la gui y reproducir un sonido simultaneamente
-     * Este metodo se activa cuando una tecla se presiona
-     */
+	 * Metodo de la interfaz KeyListener reescrito para manejar el texto de la
+	 * etiqueda de la gui y reproducir un sonido simultaneamente Este metodo se
+	 * activa cuando una tecla se presiona
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		//l.setText(e.getKeyText(e.getKeyCode())); //Reemplaza el contenido de la etiqueta la gui por el simbolo de la tecla presionada
-		
-		stec.selectTecla(e.getKeyText(e.getKeyCode())); //Segun la tecla presionada se reproduce un sonido en respuesta
-		lblEstado.setText(stec.getNota());
-		
+		// l.setText(e.getKeyText(e.getKeyCode())); //Reemplaza el contenido de
+		// la etiqueta la gui por el simbolo de la tecla presionada
+
+		stec.selectTecla(e.getKeyText(e.getKeyCode())); // Segun la tecla
+														// presionada se
+														// reproduce un sonido
+														// en respuesta
+		etiquetaDeEstado.setText(stec.getNota());
 	}
+
 	/**
-     * Metodo de la interfaz KeyListener reescrito para detener la reproducion de un sonido
-     * Este metodo se activa cuando una tecla se suelta
-     */
+	 * Metodo de la interfaz KeyListener reescrito para detener la reproducion
+	 * de un sonido Este metodo se activa cuando una tecla se suelta
+	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 		r.setTemp("");
-		
+
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getSource() instanceof BotonTecla)
+		if (e.getSource() instanceof BotonTecla)//prevencion. clases anonimas > otras
 		{
 			BotonTecla b = (BotonTecla)e.getSource();
 			stec.selectTecla(b.getTecla()); //Segun la tecla presionada se reproduce un sonido en respuesta
-			lblEstado.setText(stec.getNota());
+			etiquetaDeEstado.setText(stec.getNota());
 		}
 	}
 
