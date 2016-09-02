@@ -9,4 +9,77 @@ package motor;
 
 public class Score {
 
+private static int aciertos,teclasPresionadas,fallos=0;
+private static long score=0;
+
+public static void acierto()
+{
+	aciertos++;
+	score = aciertos*10+score;
+}
+
+public static void fallos()
+{
+	fallos++;
+}
+
+public static int getRatioAciertos()
+{
+    return 	(aciertos/teclasPresionadas)*100;
+}
+
+public static int getRatioFallos()
+{
+	return (fallos/teclasPresionadas)*100;
+}
+
+public static long getPuntuacion()
+{
+	return score;
+}
+
+public static void reset()
+{
+	aciertos =0;
+	teclasPresionadas=0;
+	fallos=0;
+	score=0;
+}
+
+public static String rateLetra()
+{
+	int r = getRatioAciertos();
+	String value;
+	if (r==100)
+	{
+		value = "Perfect";
+	}
+	else
+	{
+		if (r>=80&&r<100)
+		{
+			value = "S+";
+		}
+		else
+		{
+			if (r>=60&&r<80)
+			{
+				value = "S";
+			}
+			else
+			{
+				if(r>=50&&r<60)
+				{
+					value = "A";
+				}
+				else
+				{
+					value = "D";
+				}
+			}
+		}
+	}
+	return value;
+}
+
 }
