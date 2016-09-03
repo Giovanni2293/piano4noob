@@ -5,22 +5,18 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
-import javax.swing.OverlayLayout;
+
 
 import java.awt.FlowLayout;
-import javax.swing.border.CompoundBorder;
-import java.awt.GridBagLayout;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 
-import javax.swing.border.LineBorder;
-
 import jm.JMC;
-import jm.music.data.Note;
 import jm.music.data.Rest;
 import jm.util.Play;
 import motor.Reproduccion;
-import sun.misc.PerformanceLogger;
 import utilidad.BotonTecla;
 import utilidad.STecla;
 import utilidad.UbicarTeclas;
@@ -36,15 +32,18 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.Panel;
 import java.awt.Font;
-import javax.swing.border.BevelBorder;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
+
+import javax.swing.BoxLayout;
+import javax.swing.JSlider;
+import java.awt.Component;
+import javax.swing.JComboBox;
+
 
 public class Piano4Noob implements KeyListener , MouseListener {
 
@@ -55,6 +54,7 @@ public class Piano4Noob implements KeyListener , MouseListener {
 							// las teclas del piano que se accionan, las cuales
 							// estan asociadas al teclado
 	private UbicarTeclas guiTeclado;
+	private Toolkit t;
 	/**
 	 * Launch the application.
 	 */
@@ -85,14 +85,14 @@ public class Piano4Noob implements KeyListener , MouseListener {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		r = r.getRepro(); // Devuelve un objeto unico de tipo Reproduccion
+		r = Reproduccion.getRepro(); // Devuelve un objeto unico de tipo Reproduccion
 
 		stec = new STecla();
 		frmPianonoobs = new JFrame();
 		frmPianonoobs.setTitle("Piano4Noobs");
 		frmPianonoobs.setAutoRequestFocus(false);
 		frmPianonoobs.setResizable(false);
-		Toolkit t = Toolkit.getDefaultToolkit();
+		t = Toolkit.getDefaultToolkit();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int anchoDePantalla = (int) screenSize.getWidth() - 50;
 		frmPianonoobs.addKeyListener(this);// Le asocia el Escuchador de eventos de
@@ -124,6 +124,39 @@ public class Piano4Noob implements KeyListener , MouseListener {
 		JPanel panelDificultad = new JPanel();
 		panelDificultad.setBounds(1000, 34, 250, 174);
 		panelDeControles.add(panelDificultad);
+		panelDificultad.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JLabel Dificultada = new JLabel("Dificultad");
+		Dificultada.setFont(new Font("Arial", Font.PLAIN, 14));
+		Dificultada.setHorizontalAlignment(SwingConstants.CENTER);
+		panelDificultad.add(Dificultada);
+		JPanel panelIntVelocidad = new JPanel();
+		panelDificultad.add(panelIntVelocidad);
+		panelIntVelocidad.setLayout(new BoxLayout(panelIntVelocidad, BoxLayout.X_AXIS));
+		
+		JLabel lblVelocidad = new JLabel("Velocidad");
+		
+		lblVelocidad.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panelIntVelocidad.add(lblVelocidad);
+		lblVelocidad.setBorder(new EmptyBorder(5, 10, 5, 10));
+		
+		JSlider slider = new JSlider();
+		slider.setBorder(new EmptyBorder(0, 5, 0, 5));
+		slider.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		panelIntVelocidad.add(slider);
+		
+		JPanel panelIntPista = new JPanel();
+		panelDificultad.add(panelIntPista);
+		panelIntPista.setLayout(new BoxLayout(panelIntPista, BoxLayout.X_AXIS));
+		
+		JLabel lblPista = new JLabel("Pista");
+		lblPista.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblPista.setBorder(new EmptyBorder(0,10,0,10));
+		panelIntPista.add(lblPista);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBorder(new EmptyBorder(15, 5, 15, 5));
+		panelIntPista.add(comboBox);
 		
 		JPanel difucultad = new JPanel();
 		difucultad.setBackground(Color.DARK_GRAY);
@@ -131,12 +164,35 @@ public class Piano4Noob implements KeyListener , MouseListener {
 		panelDeControles.add(difucultad);
 		
 		JPanel aciertos = new JPanel();
-		aciertos.setBounds(100, 34, 150, 80);
+		aciertos.setBounds(100, 37, 150, 80);
 		panelDeControles.add(aciertos);
+		aciertos.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblAciertos = new JLabel("Aciertos");
+		lblAciertos.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAciertos.setAlignmentX(Component.CENTER_ALIGNMENT);
+		aciertos.add(lblAciertos, BorderLayout.NORTH);
+		
+		JLabel lblTtAciertos = new JLabel("000");
+		lblTtAciertos.setFont(new Font("Arial Black", Font.PLAIN, 28));
+		lblTtAciertos.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTtAciertos.setAlignmentY(Component.CENTER_ALIGNMENT);
+		lblTtAciertos.setAlignmentX(Component.CENTER_ALIGNMENT);
+		aciertos.add(lblTtAciertos, BorderLayout.CENTER);
 		
 		JPanel errores = new JPanel();
 		errores.setBounds(100, 128, 150, 80);
 		panelDeControles.add(errores);
+		errores.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblFallos = new JLabel("Fallos");
+		lblFallos.setHorizontalAlignment(SwingConstants.CENTER);
+		errores.add(lblFallos, BorderLayout.NORTH);
+		
+		JLabel lblTtFallos = new JLabel("000");
+		lblTtFallos.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTtFallos.setFont(new Font("Arial Black", Font.PLAIN, 28));
+		errores.add(lblTtFallos, BorderLayout.CENTER);
 		
 		
 		JPanel panelDeTeclado = new JPanel(){
