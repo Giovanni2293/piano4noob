@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
+import javax.swing.OverlayLayout;
+
 import java.awt.FlowLayout;
 import javax.swing.border.CompoundBorder;
 import java.awt.GridBagLayout;
@@ -40,6 +42,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.Panel;
 import java.awt.Font;
+import javax.swing.border.BevelBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Piano4Noob implements KeyListener , MouseListener {
 
@@ -133,14 +138,22 @@ public class Piano4Noob implements KeyListener , MouseListener {
 		errores.setBounds(100, 128, 150, 80);
 		panelDeControles.add(errores);
 		
-
-		JPanel panelDeTeclado = new JPanel();
+		
+		JPanel panelDeTeclado = new JPanel(){
+			//Esta instruccion ayuda a que los botones traslapados
+			//no cambien su trasposicion tras pasar el mouse
+			//IMPORTANTE
+		      public boolean isOptimizedDrawingEnabled() {
+		        return false;
+		      }
+		    };
+		
 		panelContenedor.add(panelDeTeclado);
-		panelDeTeclado.setBackground(Color.WHITE);
+		panelDeTeclado.setBackground(Color.GRAY);
+		
 		
 	
-		// Tamaño para botones // Apartir de aquí agregar botones
-		int anchoParaBotones = (anchoDePantalla - 40) / 19;
+		
 		panelDeTeclado.setLayout(null);
 		
 		JButton bordeIzquierdo = new JButton("");
@@ -151,12 +164,7 @@ public class Piano4Noob implements KeyListener , MouseListener {
 		panelDeTeclado.add(bordeIzquierdo);
 		
 		
-		guiTeclado = new UbicarTeclas(anchoParaBotones, 240, this);
-		BotonTecla[] Teclas = new BotonTecla[19];
-		Teclas = guiTeclado.getArPiano();
-		for(int i=0;i<=18 ; i++){
-			panelDeTeclado.add(Teclas[i]);
-		}
+		
 		
 		
 		JButton bordeDerecho = new JButton("");
@@ -166,8 +174,35 @@ public class Piano4Noob implements KeyListener , MouseListener {
 		bordeDerecho.setBorder(null);
 		panelDeTeclado.add(bordeDerecho);
 		
+		int anchoPanelTeclas;
+		anchoPanelTeclas = anchoDePantalla - 40;
 		
+		JPanel negras = new JPanel();
+		negras.setOpaque(false);
+		negras.setBounds(20, 0, anchoPanelTeclas, 235);
+		negras.setBackground(Color.WHITE);
+		panelDeTeclado.add(negras);
+		negras.setLayout(null);
 		
+		JPanel blancas = new JPanel();
+		blancas.setBounds(20, 0, anchoPanelTeclas, 235);
+		panelDeTeclado.add(blancas);
+		blancas.setLayout(null);
+		
+		// Tamaño para botones // Apartir de aquí agregar botones
+				int anchoParaBotones = (anchoDePantalla - 40) / 19;
+		
+		guiTeclado = new UbicarTeclas(anchoParaBotones, 235, this);
+		BotonTecla[] Teclas = new BotonTecla[31];
+		Teclas = guiTeclado.getArPiano();
+		for(int i=31;0<=i ; i--){
+			if (i <= 18){
+				blancas.add(Teclas[i]);
+			}else{
+				negras.add(Teclas[i]);
+			}
+									
+		}
 		
 		
 		
