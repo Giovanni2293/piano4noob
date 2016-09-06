@@ -14,7 +14,6 @@ public class UbicarTeclas {
 	private int ancho;
 	private int alto;
 	private Piano4Noob listener;
-	
 
 	public UbicarTeclas(int ancho, int alto, Piano4Noob listener) {
 		this.ancho = ancho;
@@ -94,11 +93,12 @@ public class UbicarTeclas {
 		arPiano[30] = SolS5;
 		arPiano[31] = LaS5;
 
+		
 	}
 
 	public void posicionarBotones() {
-		int xBlanc, yBlanc, xNegra, yNegra,anchoNegra,altoNegra;
-		anchoNegra =(int) (ancho * 0.80);
+		int xBlanc, yBlanc, xNegra, yNegra, anchoNegra, altoNegra;
+		anchoNegra = (int) (ancho * 0.80);
 		altoNegra = (int) (alto * 0.65);
 		xBlanc = 0;
 		yBlanc = 0;
@@ -112,7 +112,7 @@ public class UbicarTeclas {
 			arPiano[i].setBounds(xBlanc, yBlanc, ancho, alto);
 			xBlanc = xBlanc + ancho;
 		}
-		xNegra =  ancho - (anchoNegra /2);
+		xNegra = ancho - (anchoNegra / 2);
 		yNegra = 0;
 		for (int i = 19; i <= 31; i++) {
 			arPiano[i].addKeyListener(listener);
@@ -121,13 +121,11 @@ public class UbicarTeclas {
 			arPiano[i].setForeground(Color.WHITE);
 			arPiano[i].setBackground(Color.black);
 			arPiano[i].setFont(new Font("Tahoma", Font.PLAIN, 10));
-			
-			
-			if(i == 21 || i== 23 || i== 26 || i==28 ){
-			arPiano[i].setBounds(xNegra, yNegra, anchoNegra, altoNegra);
-			xNegra = xNegra + (2*ancho);
-			}
-			else{
+
+			if (i == 21 || i == 23 || i == 26 || i == 28) {
+				arPiano[i].setBounds(xNegra, yNegra, anchoNegra, altoNegra);
+				xNegra = xNegra + (2 * ancho);
+			} else {
 				arPiano[i].setBounds(xNegra, yNegra, anchoNegra, altoNegra);
 				xNegra = xNegra + ancho;
 			}

@@ -13,6 +13,7 @@ public class BotonTecla extends JButton{
 		
 		
 	}
+	
 	public String getTecla() {
 		return tecla;
 	}

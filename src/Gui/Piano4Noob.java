@@ -18,6 +18,7 @@ import jm.util.Play;
 import motor.Reproduccion;
 import utilidad.BotonTecla;
 import utilidad.STecla;
+import utilidad.Traductor;
 import utilidad.UbicarTeclas;
 
 import java.awt.Color;
@@ -29,6 +30,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashMap;
 
 import javax.swing.SwingConstants;
 import javax.swing.JMenuBar;
@@ -41,21 +43,30 @@ import javax.swing.BoxLayout;
 import javax.swing.JSlider;
 import java.awt.Component;
 import javax.swing.JComboBox;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 
 public class Piano4Noob implements KeyListener, MouseListener {
 
 	private JFrame frmPianonoobs;
 	JLabel etiquetaDeEstado;
+	JLabel lblTeclaTocada;
 	private STecla stec;
 	private Reproduccion r; // Elemento necesario para reproducir los sonidos de
 							// las teclas del piano que se accionan, las cuales
 							// estan asociadas al teclado
 	private UbicarTeclas guiTeclado;
 	private Toolkit t;
-	Color colorBoton; //almacena temporalmente el color de las teclas para los cambios dinamicos de color
-	BotonTecla[] Teclas;  //arreglo que contiene los botones de la gui con su respectiva ubicacion
-	BotonTecla bTemp;  //almacena una tecla temporalmente para cambiar el color en keypresed
-	
+	Color colorBoton; // almacena temporalmente el color de las teclas para los
+						// cambios dinamicos de color
+	BotonTecla[] Teclas; // arreglo que contiene los botones de la gui con su
+							// respectiva ubicacion
+	BotonTecla bTemp; // almacena una tecla temporalmente para cambiar el color
+						// en keypresed
+	String[] textoLbLibre; // arreglo que contine los string que representan las
+							// ultimas teclas tocadas
+	Traductor tr;
+
 	/**
 	 * Launch the application.
 	 */
@@ -98,7 +109,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		t = Toolkit.getDefaultToolkit();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		anchoDePantalla = (int) screenSize.getWidth() - 50;
-		
+
 		anchoPanelTeclas = anchoDePantalla - 40;
 		frmPianonoobs.addKeyListener(this);// Le asocia el Escuchador de eventos
 											// de
@@ -167,6 +178,21 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		difucultad.setBackground(Color.DARK_GRAY);
 		difucultad.setBounds(300, 65, 650, 143);
 		panelDeControles.add(difucultad);
+		difucultad.setLayout(new GridLayout(0, 1, 0, 0));
+
+		JLabel lblNewLabel = new JLabel("New label");
+		difucultad.add(lblNewLabel);
+
+		JPanel panel = new JPanel();
+		difucultad.add(panel);
+		panel.setLayout(new GridLayout(0, 1, 0, 0));
+
+		lblTeclaTocada = new JLabel("");
+		lblTeclaTocada.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 32));
+		panel.add(lblTeclaTocada);
+		lblTeclaTocada.setSize(new Dimension(610, 60));
+		lblTeclaTocada.setBorder(new EmptyBorder(10, 10, 10, 10));
+		textoLbLibre = new String[6];
 
 		JPanel aciertos = new JPanel();
 		aciertos.setBounds(100, 37, 150, 80);
@@ -212,18 +238,18 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		panelDeTeclado.setBackground(Color.GRAY);
 
 		panelDeTeclado.setLayout(null);
-		
-				JPanel negras = new JPanel();
-				negras.setOpaque(false);
-				negras.setBounds(18, 0, anchoPanelTeclas, 235);
-				negras.setBackground(Color.WHITE);
-				panelDeTeclado.add(negras);
-				negras.setLayout(null);
-		
-				JPanel blancas = new JPanel();
-				blancas.setBounds(18, 0, anchoPanelTeclas, 235);
-				panelDeTeclado.add(blancas);
-				blancas.setLayout(null);
+
+		JPanel negras = new JPanel();
+		negras.setOpaque(false);
+		negras.setBounds(18, 0, anchoPanelTeclas, 235);
+		negras.setBackground(Color.WHITE);
+		panelDeTeclado.add(negras);
+		negras.setLayout(null);
+
+		JPanel blancas = new JPanel();
+		blancas.setBounds(18, 0, anchoPanelTeclas, 235);
+		panelDeTeclado.add(blancas);
+		blancas.setLayout(null);
 
 		JButton bordeIzquierdo = new JButton("");
 		bordeIzquierdo.setEnabled(false);
@@ -239,15 +265,15 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		bordeDerecho.setBorder(null);
 		panelDeTeclado.add(bordeDerecho);
 
-		
-
 		// Tamaño para botones // Apartir de aquí agregar botones
 		int anchoParaBotones = (anchoDePantalla - 40) / 19;
 
 		guiTeclado = new UbicarTeclas(anchoParaBotones, 235, this);
 		Teclas = new BotonTecla[31];
 		Teclas = guiTeclado.getArPiano();
-		for (int i = 31; 0 <= i; i--) {
+		//for (int i = 31; 0 <= i; i--) {
+			for (int i = 31; 0 <= i; i--) {
+			
 			if (i <= 18) {
 				blancas.add(Teclas[i]);
 			} else {
@@ -277,7 +303,6 @@ public class Piano4Noob implements KeyListener, MouseListener {
 													// nota
 		Play.stopMidiCycle();// metodo de la clase Play que se encaarga de
 								// detener la reproducion iniciada en midiCycle
-		
 
 	}
 
@@ -298,24 +323,20 @@ public class Piano4Noob implements KeyListener, MouseListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		// l.setText(e.getKeyText(e.getKeyCode())); //Reemplaza el contenido de
 		// la etiqueta la gui por el simbolo de la tecla presionada
-        System.out.println(""+e.getKeyText(e.getKeyCode()));
 		stec.selectTecla(e.getKeyText(e.getKeyCode())); // Segun la tecla
 														// presionada se
 														// reproduce un sonido
-														// en respuesta
+														// qen respuesta
 		etiquetaDeEstado.setText(stec.getNota());
-		
-		for(BotonTecla  t: Teclas )
-		{
+		actualizaLLibre(e.getKeyText(e.getKeyCode()));
+		for (BotonTecla t : Teclas) {
 			String s = t.getTecla();
-			String s2= e.getKeyText(e.getKeyCode());
-			if(s.equals(s2)) 
-				{
-					bTemp=t;
-					bTemp.setBackground(Color.gray);
-				}
+			String s2 = e.getKeyText(e.getKeyCode());
+			if (s.equals(s2)) {
+				bTemp = t;
+				bTemp.setBackground(Color.gray);
+			}
 		}
 	}
 
@@ -326,10 +347,17 @@ public class Piano4Noob implements KeyListener, MouseListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		//System.out.println(bTemp.getText());
-		if(bTemp.getText().length()==2)bTemp.setBackground(Color.WHITE);
-		else bTemp.setBackground(Color.black);
-		
+		// System.out.println(bTemp.getText());
+		for (BotonTecla t : Teclas) {
+			//if (t.getBackground().equals(Color.gray)) {
+				
+				if (t.getText().length() >2)
+					t.setBackground(Color.black);
+				else
+					t.setBackground(Color.WHITE);
+			//qeq}
+		}
+
 		r.setTemp("");
 
 	}
@@ -372,4 +400,21 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		// TODO Auto-generated method stub
 
 	}
+
+	public void actualizaLLibre(String s) {
+		String tlblibre = " "; // String que se muestra en la marquesina de
+								// libre
+		for (int i = 0; i < textoLbLibre.length; i++) {
+			if (i < textoLbLibre.length - 1) {
+				textoLbLibre[i] = textoLbLibre[i + 1];
+			} else {
+				textoLbLibre[i] = s;
+			}
+			if (textoLbLibre[i] != null)
+				tlblibre += textoLbLibre[i] + "  ";
+		}
+
+		lblTeclaTocada.setText(tlblibre);
+	}
+
 }
