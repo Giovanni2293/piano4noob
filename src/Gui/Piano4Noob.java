@@ -52,7 +52,10 @@ public class Piano4Noob implements KeyListener, MouseListener {
 							// estan asociadas al teclado
 	private UbicarTeclas guiTeclado;
 	private Toolkit t;
-
+	Color colorBoton; //almacena temporalmente el color de las teclas para los cambios dinamicos de color
+	BotonTecla[] Teclas;  //arreglo que contiene los botones de la gui con su respectiva ubicacion
+	BotonTecla bTemp;  //almacena una tecla temporalmente para cambiar el color en keypresed
+	
 	/**
 	 * Launch the application.
 	 */
@@ -242,7 +245,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		int anchoParaBotones = (anchoDePantalla - 40) / 19;
 
 		guiTeclado = new UbicarTeclas(anchoParaBotones, 235, this);
-		BotonTecla[] Teclas = new BotonTecla[31];
+		Teclas = new BotonTecla[31];
 		Teclas = guiTeclado.getArPiano();
 		for (int i = 31; 0 <= i; i--) {
 			if (i <= 18) {
@@ -274,6 +277,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 													// nota
 		Play.stopMidiCycle();// metodo de la clase Play que se encaarga de
 								// detener la reproducion iniciada en midiCycle
+		
 
 	}
 
@@ -296,12 +300,23 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		// TODO Auto-generated method stub
 		// l.setText(e.getKeyText(e.getKeyCode())); //Reemplaza el contenido de
 		// la etiqueta la gui por el simbolo de la tecla presionada
-
+        System.out.println(""+e.getKeyText(e.getKeyCode()));
 		stec.selectTecla(e.getKeyText(e.getKeyCode())); // Segun la tecla
 														// presionada se
 														// reproduce un sonido
 														// en respuesta
 		etiquetaDeEstado.setText(stec.getNota());
+		
+		for(BotonTecla  t: Teclas )
+		{
+			String s = t.getTecla();
+			String s2= e.getKeyText(e.getKeyCode());
+			if(s.equals(s2)) 
+				{
+					bTemp=t;
+					bTemp.setBackground(Color.gray);
+				}
+		}
 	}
 
 	/**
@@ -311,7 +326,10 @@ public class Piano4Noob implements KeyListener, MouseListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-
+		//System.out.println(bTemp.getText());
+		if(bTemp.getText().length()==2)bTemp.setBackground(Color.WHITE);
+		else bTemp.setBackground(Color.black);
+		
 		r.setTemp("");
 
 	}
