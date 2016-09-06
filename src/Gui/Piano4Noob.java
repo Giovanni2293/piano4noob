@@ -61,11 +61,10 @@ public class Piano4Noob implements KeyListener, MouseListener {
 						// cambios dinamicos de color
 	BotonTecla[] Teclas; // arreglo que contiene los botones de la gui con su
 							// respectiva ubicacion
-	BotonTecla bTemp; // almacena una tecla temporalmente para cambiar el color
-						// en keypresed
+	
 	String[] textoLbLibre; // arreglo que contine los string que representan las
 							// ultimas teclas tocadas
-	Traductor tr;
+	Traductor tr;  //elemento traductor
 
 	/**
 	 * Launch the application.
@@ -174,25 +173,30 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		comboBox.setBorder(new EmptyBorder(15, 5, 15, 5));
 		panelIntPista.add(comboBox);
 
-		JPanel difucultad = new JPanel();
-		difucultad.setBackground(Color.DARK_GRAY);
-		difucultad.setBounds(300, 65, 650, 143);
-		panelDeControles.add(difucultad);
-		difucultad.setLayout(new GridLayout(0, 1, 0, 0));
+		JPanel display = new JPanel();
+		display.setBackground(Color.DARK_GRAY);
+		display.setBounds(300, 65, 650, 143);
+		panelDeControles.add(display);
+		display.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JPanel panel = new JPanel();
+		display.add(panel);
 
 		JLabel lblNewLabel = new JLabel("New label");
-		difucultad.add(lblNewLabel);
+		panel.add(lblNewLabel);
 
-		JPanel panel = new JPanel();
-		difucultad.add(panel);
-		panel.setLayout(new GridLayout(0, 1, 0, 0));
+		JPanel panelUsuario = new JPanel();
+		display.add(panelUsuario);
+		panelUsuario.setLayout(new GridLayout(0, 1, 0, 0));
 
 		lblTeclaTocada = new JLabel("");
+		lblTeclaTocada.setHorizontalTextPosition(SwingConstants.LEADING);
+		lblTeclaTocada.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblTeclaTocada.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 32));
-		panel.add(lblTeclaTocada);
+		panelUsuario.add(lblTeclaTocada);
 		lblTeclaTocada.setSize(new Dimension(610, 60));
 		lblTeclaTocada.setBorder(new EmptyBorder(10, 10, 10, 10));
-		textoLbLibre = new String[6];
+		textoLbLibre = new String[10];
 
 		JPanel aciertos = new JPanel();
 		aciertos.setBounds(100, 37, 150, 80);
@@ -295,7 +299,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		etiquetaDeEstado.setBackground(Color.LIGHT_GRAY);
 		etiquetaDeEstado.setVerticalAlignment(SwingConstants.BOTTOM);
 		etiquetaDeEstado.setHorizontalAlignment(SwingConstants.LEFT);
-
+		tr=new Traductor();
 		Play.midiCycle(new Rest(JMC.HALF_NOTE)); // La clase Play pertenece a la
 													// libreria JMusic, el
 													// metodo midiCycle
@@ -329,13 +333,12 @@ public class Piano4Noob implements KeyListener, MouseListener {
 														// reproduce un sonido
 														// qen respuesta
 		etiquetaDeEstado.setText(stec.getNota());
-		actualizaLLibre(e.getKeyText(e.getKeyCode()));
+		actualizaLLibre(tr.getMapaDeNotas().get(e.getKeyText(e.getKeyCode())));
 		for (BotonTecla t : Teclas) {
 			String s = t.getTecla();
 			String s2 = e.getKeyText(e.getKeyCode());
 			if (s.equals(s2)) {
-				bTemp = t;
-				bTemp.setBackground(Color.gray);
+				t.setBackground(Color.gray);
 			}
 		}
 	}
@@ -402,6 +405,8 @@ public class Piano4Noob implements KeyListener, MouseListener {
 	}
 
 	public void actualizaLLibre(String s) {
+		if(s!=null)
+		{
 		String tlblibre = " "; // String que se muestra en la marquesina de
 								// libre
 		for (int i = 0; i < textoLbLibre.length; i++) {
@@ -415,6 +420,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		}
 
 		lblTeclaTocada.setText(tlblibre);
+		}
 	}
 
 }
