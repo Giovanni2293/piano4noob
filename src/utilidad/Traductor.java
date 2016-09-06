@@ -1,11 +1,12 @@
 package utilidad;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 //no esta en uso
 public class Traductor {
-	private HashMap<String, String> Notas;
-	private HashMap<String, String> Teclas;
+	private LinkedHashMap<String, String> Notas;
+	private LinkedHashMap<String, String> Teclas;
 	public Traductor() {
 
 		crearMapaDeNotas();
@@ -16,7 +17,7 @@ public class Traductor {
 	 */
 	public void crearMapaDeNotas() {
 
-		Notas = new HashMap();
+		Notas = new LinkedHashMap();
 		Notas.put("Z", "F3");
 		Notas.put("S", "FS3");
 		Notas.put("X", "G3");
@@ -55,7 +56,7 @@ public class Traductor {
 	 * Guarda una Nota como clave y una tecla como valor;
 	 */
 	public void crearMapaDeTeclas() {
-		Teclas = new HashMap();
+		Teclas = new LinkedHashMap();
 		Teclas.put( "F3","Z");
 		Teclas.put( "FS3","S");
 		Teclas.put( "G3","X");
@@ -90,10 +91,10 @@ public class Traductor {
 		Teclas.put( "C6", "Acento Agudo Muerto");
 	}
 
-	public HashMap<String, String> getMapaDeTeclas() {
+	public LinkedHashMap<String, String> getMapaDeTeclas() {
 		return Teclas;
 	}
-	public HashMap<String, String> getMapaDeNotas(){
+	public LinkedHashMap<String, String> getMapaDeNotas(){
 		return Notas;
 	}
 
