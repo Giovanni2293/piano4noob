@@ -1,79 +1,100 @@
 package utilidad;
+
+import java.util.HashMap;
+
 //no esta en uso
-public  class Traductor {
-	
-	public Traductor(){
-		
+public class Traductor {
+	private HashMap<String, String> Notas;
+	private HashMap<String, String> Teclas;
+	public Traductor() {
+
+		crearMapaDeNotas();
+		crearMapaDeTeclas();
 	}
-	public static int notaToInt(String t){
-		int response = 0;
-		switch(t){
-		case "Do2": response = 36; break;
-		case "DoSus2": response = 37; break;
-		case "Re2": response = 38; break;
-		case "ReSus2": response = 39; break;
-		case "Mi2": response = 40; break;
-		case "Fa2": response = 41; break;
-		case "FaSus2": response = 42; break;
-		case "Sol2": response = 43; break;
-		case "SolSus2": response = 44; break;
-		case "La2": response = 45; break;
-		case "LaSus2": response = 46; break;
-		case "Si2": response = 47; break;
-		case "Do3": response = 48; break;
-		case "DoSus3": response = 49; break;
-		case "Re3": response = 50; break;
-		case "ReSus3": response = 51; break;
-		case "Mi3": response = 52; break;
-		case "Fa3": response = 53; break;
-		case "FaSus3": response = 54; break;
-		case "Sol3": response = 55; break;
-		case "SolSus3": response = 56; break;
-		case "La3": response = 57; break;
-		case "LaSus3": response = 58; break;
-		case "Si3": response = 59; break;
-		case "Do4": response = 60; break;
-		case "DoSus4": response = 61; break;
-		case "Re4": response = 62; break;
-		case "ReSus4": response = 63; break;
-		case "Mi4": response = 64; break;
-		case "Fa4": response = 65; break;
-		case "FaSus4": response = 66; break;
-		case "Sol4": response = 67; break;
-		case "SolSus4": response = 68; break;
-		case "La4": response = 69; break;
-		case "LaSus4": response = 70; break;
-		case "Si4": response = 71; break;
-		case "Do5": response = 72; break;
-		case "DoSus5": response = 73; break;
-		case "Re5": response = 74; break;
-		case "ReSus5": response = 75; break;
-		case "Mi5": response = 76; break;
-		case "Fa5": response = 77; break;
-		case "FaSus5": response = 78; break;
-		case "Sol5": response = 79; break;
-		case "SolSus5": response = 80; break;
-		case "La5": response = 81; break;
-		case "LaSus5": response = 82; break;
-		case "Si5": response = 83; break;
-		case "Do6": response = 84; break;
-		case "DoSus6": response = 85; break;
-		case "Re6": response = 86; break;
-		case "ReSus6": response = 87; break;
-		case "Mi6": response = 88; break;
-		case "Fa6": response = 89; break;
-		case "FaSus6": response = 90; break;
-		case "Sol6": response = 91; break;
-		case "SolSus6": response = 92; break;
-		case "La6": response = 93; break;
-		case "LaSus6": response = 94; break;
-		case "Si6": response = 95; break;
-		case "Do7": response = 96; break;
-		
-		}
-				
-		
-		return response;
+	/**
+	 * Guarda una tecla como clave y una nota como valor
+	 */
+	public void crearMapaDeNotas() {
+
+		Notas = new HashMap();
+		Notas.put("Z", "F3");
+		Notas.put("S", "FS3");
+		Notas.put("X", "G3");
+		Notas.put("D", "GS3");
+		Notas.put("C", "A3");
+		Notas.put("F", "AS3");
+		Notas.put("V", "B3");
+		Notas.put("B", "C4");
+		Notas.put("H", "CS4");
+		Notas.put("N", "D4");
+		Notas.put("J", "DS4");
+		Notas.put("M", "E4");
+		Notas.put("Coma", "F4");
+		Notas.put("L", "FS4");
+		Notas.put("Q", "G4");
+		Notas.put("2", "GS4");
+		Notas.put("W", "A4");
+		Notas.put("3", "AS4");
+		Notas.put("E", "B4");
+		Notas.put("R", "C5");
+		Notas.put("5", "CS5");
+		Notas.put("T", "D5");
+		Notas.put("6", "DS5");
+		Notas.put("Y", "E5");
+		Notas.put("U", "F5");
+		Notas.put("8", "FS5");
+		Notas.put("I", "G5");
+		Notas.put("9", "GS5");
+		Notas.put("O", "A5");
+		Notas.put("0", "AS5");
+		Notas.put("P", "B5");
+		Notas.put("Acento Agudo Muerto", "C6");
+
+	}
+	/**
+	 * Guarda una Nota como clave y una tecla como valor;
+	 */
+	public void crearMapaDeTeclas() {
+		Teclas = new HashMap();
+		Teclas.put( "F3","Z");
+		Teclas.put( "FS3","S");
+		Teclas.put( "G3","X");
+		Teclas.put( "GS3","D");
+		Teclas.put( "A3","C");
+		Teclas.put( "AS3","F");
+		Teclas.put( "B3","V");
+		Teclas.put( "C4","B");
+		Teclas.put( "CS4","H");
+		Teclas.put( "D4","N");
+		Teclas.put( "DS4","J");
+		Teclas.put( "E4","M");
+		Teclas.put( "F4","Coma");
+		Teclas.put( "FS4","L");
+		Teclas.put( "G4", "Q");
+		Teclas.put( "GS4","2");
+		Teclas.put( "A4","W");
+		Teclas.put( "AS4","3");
+		Teclas.put( "B4","E");
+		Teclas.put( "C5","R");
+		Teclas.put( "CS5","5");
+		Teclas.put( "D5","T");
+		Teclas.put( "DS5","6");
+		Teclas.put( "E5","Y");
+		Teclas.put( "F5","U");
+		Teclas.put( "FS5","8");
+		Teclas.put( "G5","I");
+		Teclas.put( "GS5","9");
+		Teclas.put( "A5","O");
+		Teclas.put( "AS5","0");
+		Teclas.put( "B5","P");
+		Teclas.put( "C6", "Acento Agudo Muerto");
+	}
+
+	public HashMap<String, String> getMapaDeTeclas() {
+		return Teclas;
+	}
+	public HashMap<String, String> getMapaDeNotas(){
+		return Notas;
 	}
 
 }

@@ -73,7 +73,7 @@ public class Piano {
 	{
 		for (Tecla t : teclas)
 		{
-			if (nota.equals(t.getNombreNatural()))
+			if (nota.equals(t.getNota()))
 				return t;
 		}
 		

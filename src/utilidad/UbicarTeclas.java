@@ -14,6 +14,7 @@ public class UbicarTeclas {
 	private int ancho;
 	private int alto;
 	private Piano4Noob listener;
+	
 
 	public UbicarTeclas(int ancho, int alto, Piano4Noob listener) {
 		this.ancho = ancho;
@@ -26,38 +27,38 @@ public class UbicarTeclas {
 
 	public void crearTeclas() {
 
-		BotonTecla Fa3 = new BotonTecla("F3", "Q");
-		BotonTecla FaS3 = new BotonTecla("FS3", "2");
-		BotonTecla Sol3 = new BotonTecla("G3", "W");
-		BotonTecla SolS3 = new BotonTecla("GS3", "3");
-		BotonTecla La3 = new BotonTecla("A3", "E");
-		BotonTecla LaS3 = new BotonTecla("AS3", "4");
-		BotonTecla Si3 = new BotonTecla("B3", "R");
-		BotonTecla Do4 = new BotonTecla("C4", "T");
-		BotonTecla DoS4 = new BotonTecla("CS4", "6");
-		BotonTecla Re4 = new BotonTecla("D4", "Y");
-		BotonTecla ReS4 = new BotonTecla("DS4", "7");
-		BotonTecla Mi4 = new BotonTecla("E4", "U");
-		BotonTecla Fa4 = new BotonTecla("F4", "I");
-		BotonTecla FaS4 = new BotonTecla("FS4", "9");
-		BotonTecla Sol4 = new BotonTecla("G4", "O");
-		BotonTecla SolS4 = new BotonTecla("GS4", "0");
-		BotonTecla La4 = new BotonTecla("A4", "P");
-		BotonTecla LaS4 = new BotonTecla("AS4", "Comilla");
-		BotonTecla Si4 = new BotonTecla("B4", "Acento Agudo Muerto");
-		BotonTecla Do5 = new BotonTecla("C5", "Z");
-		BotonTecla DoS5 = new BotonTecla("CS5", "S");
-		BotonTecla Re5 = new BotonTecla("D5", "X");
-		BotonTecla ReS5 = new BotonTecla("DS5", "D");
-		BotonTecla Mi5 = new BotonTecla("E5", "C");
-		BotonTecla Fa5 = new BotonTecla("F5", "V");
-		BotonTecla FaS5 = new BotonTecla("FS5", "G");
-		BotonTecla Sol5 = new BotonTecla("G5", "B");
-		BotonTecla SolS5 = new BotonTecla("GS5", "0");
-		BotonTecla La5 = new BotonTecla("A5", "N");
-		BotonTecla LaS5 = new BotonTecla("AS5", "J");
-		BotonTecla Si5 = new BotonTecla("B5", "M");
-		BotonTecla Do6 = new BotonTecla("C6", "Coma");
+		BotonTecla Fa3 = new BotonTecla("F3");
+		BotonTecla FaS3 = new BotonTecla("FS3");
+		BotonTecla Sol3 = new BotonTecla("G3");
+		BotonTecla SolS3 = new BotonTecla("GS3");
+		BotonTecla La3 = new BotonTecla("A3");
+		BotonTecla LaS3 = new BotonTecla("AS3");
+		BotonTecla Si3 = new BotonTecla("B3");
+		BotonTecla Do4 = new BotonTecla("C4");
+		BotonTecla DoS4 = new BotonTecla("CS4");
+		BotonTecla Re4 = new BotonTecla("D4");
+		BotonTecla ReS4 = new BotonTecla("DS4");
+		BotonTecla Mi4 = new BotonTecla("E4");
+		BotonTecla Fa4 = new BotonTecla("F4");
+		BotonTecla FaS4 = new BotonTecla("FS4");
+		BotonTecla Sol4 = new BotonTecla("G4");
+		BotonTecla SolS4 = new BotonTecla("GS4");
+		BotonTecla La4 = new BotonTecla("A4");
+		BotonTecla LaS4 = new BotonTecla("AS4");
+		BotonTecla Si4 = new BotonTecla("B4");
+		BotonTecla Do5 = new BotonTecla("C5");
+		BotonTecla DoS5 = new BotonTecla("CS5");
+		BotonTecla Re5 = new BotonTecla("D5");
+		BotonTecla ReS5 = new BotonTecla("DS5");
+		BotonTecla Mi5 = new BotonTecla("E5");
+		BotonTecla Fa5 = new BotonTecla("F5");
+		BotonTecla FaS5 = new BotonTecla("FS5");
+		BotonTecla Sol5 = new BotonTecla("G5");
+		BotonTecla SolS5 = new BotonTecla("GS5");
+		BotonTecla La5 = new BotonTecla("A5");
+		BotonTecla LaS5 = new BotonTecla("AS5");
+		BotonTecla Si5 = new BotonTecla("B5");
+		BotonTecla Do6 = new BotonTecla("C6");
 
 		// Se añaden las teclas al arreglo
 		arPiano[0] = Fa3;

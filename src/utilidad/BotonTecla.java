@@ -4,10 +4,13 @@ import javax.swing.JButton;
 
 public class BotonTecla extends JButton{
 	private String tecla;
-	public BotonTecla(String nombre,String tecla)
+	private Traductor tradTecla;
+	public BotonTecla(String nombre)
 	{
 		super(nombre);
-		this.tecla=tecla;
+		tradTecla = new Traductor();
+		tecla = tradTecla.getMapaDeTeclas().get(nombre);
+		
 		
 	}
 	public String getTecla() {
