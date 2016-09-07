@@ -86,7 +86,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 	Traductor tr; // elemento traductor
 	private static JFileChooser fileChooser = new JFileChooser("src\\multimedia");
 	JLabel lblFileSelect; // etiqueta con el nombre de la pista
-	Note[] allSongNotes ;
+	Note[] allSongNotes;
 
 	/**
 	 * Launch the application.
@@ -201,11 +201,9 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		BrowseFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				File fil=openFile();
-				allSongNotes= desglosarPista(fil);
-				Phrase p= new Phrase(allSongNotes);
-				Play.midiCycle(p);
-				
+				File fil = openFile();
+				allSongNotes = desglosarPista(fil);
+
 			}
 		});
 		BrowseFile.setBounds(210, 20, 30, 20);
@@ -477,26 +475,45 @@ public class Piano4Noob implements KeyListener, MouseListener {
 
 	public Note[] desglosarPista(File selectedFile) {
 		Score sco = Read.midiOrJmWithNoMessaging(selectedFile);
-		Part[] partes = sco.getPartArray();
-		Note[] notasSong= null;
+		// System.out.println(sco);
+		Note[] notasFullSong = null;
+		int tamPart, tamPhr, tamNota;
+		tamPart = sco.getSize();
+		Part[] partes = new Part[tamPart];
+		partes = sco.getPartArray();
 		ArrayList<Note> notasCancion = new ArrayList<Note>();
 		int numeroNotas = 0;
-		for (Part p2 : partes) {
-			Phrase[] ph = p2.getPhraseArray();
-			for (Phrase ph2 : ph) {
-				notasSong = ph2.getNoteArray();
+		for (int i = 0; i < partes.length; i++) {
+			tamPhr = partes[i].getSize();
+			Phrase[] ph = new Phrase[tamPhr];
+			ph = partes[i].getPhraseArray();
+			for (int k = 0; k < ph.length; k++) {
+				tamNota = ph[k].getSize();
+				Note[] notasSong = new Note[tamNota];
+				notasSong = ph[k].getNoteArray();
+				for (int j = 0; j < notasSong.length; j++) {
+					notasCancion.add(notasSong[j]);
+				}
 			}
-			for (int j = 0; j < notasSong.length; j++) {
-				notasCancion.add(notasSong[j]);
-			}
+			/*
+			*/
 		}
-		notasCancion.toArray(notasSong);
+		notasFullSong = new Note[notasCancion.size()];
+		for (int i = 0; i < notasCancion.size(); i++) {
+			notasFullSong[i] = notasCancion.get(i);
+			System.out.println(notasFullSong[i]);
+
+		}
+		// notasCancion.toArray(notasFullSong);
+
+		Phrase p = new Phrase(notasFullSong);
+		Play.midi(p);
 		/*
 		 * for(int i =0; i< notasSong.length;i++) {
 		 * r.play(Piano.getPiano().getTecla(notasSong[i].getNote()).getNota());
 		 * }
 		 */
-		return notasSong;
+		return notasFullSong;
 	}
 
 }
