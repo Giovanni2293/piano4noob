@@ -518,35 +518,41 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		 /*
 		  * 
 		  */
-		for(int i = 0; i < notasFullSong.length; i++)
-		{
+		for(int i = 0; i < notasFullSong.length; i++){
 			 int index=notasFullSong[i].getPitch();
 			 for (BotonTecla t : Teclas) {
 					String s = t.getTecla();
 					String s2 = tr.getPitchesToTeclas().get(""+index);
 					if (s.equals(s2)) {
 						t.setBackground(Color.blue);
-						 Play.midiCycle(notasFullSong[i]);
-						 Play.stopMidiCycle();
-						 
-						 if(t.getTecla().length()>2)t.setBackground(Color.black);
-						 else t.setBackground(Color.WHITE);
-						
-					}
-					System.out.println(notasFullSong[i].getDuration());
 						
 						 
 						if(t.getTecla().length()>2)t.setBackground(Color.black);
 						 else t.setBackground(Color.WHITE);
 						
 					}
-					//System.out.println(notasFullSong[i].getDuration());
+					
 
 				}
 			
+			 Temporalizador temp = new Temporalizador(notasFullSong[i]);
+			 temp.iniciar();
 			 
+			 for (BotonTecla t : Teclas) {
+					String s = t.getTecla();
+					String s2 = tr.getPitchesToTeclas().get(""+index);
+					if (s.equals(s2)) {
+											
+						 
+						if(t.getTecla().length()>2)t.setBackground(Color.black);
+						 else t.setBackground(Color.WHITE);
+						
+					}
+					
+
+				}
 			
-		
+		}
 		return notasFullSong;
 	}
 
