@@ -519,7 +519,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		  * 
 		  */
 		for(int i = 0; i < notasFullSong.length; i++){
-			System.out.println(notasFullSong.length);
+
 			 int index=notasFullSong[i].getPitch();
 			 for (BotonTecla t : Teclas) {
 				 	Temporalizador temp = new Temporalizador(t.getNombre());
@@ -537,9 +537,21 @@ public class Piano4Noob implements KeyListener, MouseListener {
 
 				}
 			
-			
+
 			 
-			 
+			 for (BotonTecla t : Teclas) {
+					String s = t.getTecla();
+					String s2 = tr.getPitchesToTeclas().get(""+index);
+					if (s.equals(s2)) {
+											
+						 
+						if(t.getTecla().length()>2)t.setBackground(Color.black);
+						 else t.setBackground(Color.WHITE);
+						
+					}
+					
+
+				}
 			
 		}
 		return notasFullSong;
