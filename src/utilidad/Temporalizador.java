@@ -5,7 +5,7 @@
 package utilidad;
 
 import jm.music.data.Note;
-import jm.util.Play;
+import motor.Reproduccion;
 
 public class Temporalizador {
 	
@@ -16,18 +16,19 @@ public class Temporalizador {
 	
 	private boolean status;
     private static int step;
-    private Note n;
-    private double tiempoNota;
+    private Reproduccion r;
+    private String n;
     
   
     
  
 
 
-	public Temporalizador(Note n) {
+	public Temporalizador(String n) {
 		super();
 		this.n = n;
-		tiempoNota = n.getDuration();
+		r= Reproduccion.getRepro();
+		
 		
 		
 	}
@@ -52,9 +53,7 @@ public class Temporalizador {
 	    {
 	    	step++;
 	    	System.out.println(step + "ejecucion" );
-	    	Play.midiCycle(n);
-	    	Play.stopMidiCycle();
-	    	detener();
+	    	
 	    }
 		
 	    
@@ -86,7 +85,5 @@ public class Temporalizador {
 			return step;
 		}
 		
-		public double getTiempoNota(){
-			return tiempoNota;
-		}
+		
 }

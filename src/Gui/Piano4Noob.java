@@ -474,7 +474,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		lblFileSelect.setText(selectedFile.getName().substring(0, index));
 		return selectedFile;
 	}
-	public Note[] desglosarPista(File selectedFile) {
+	public  Note[] desglosarPista(File selectedFile) {
 		Score sco = Read.midiOrJmWithNoMessaging(selectedFile);
 		// System.out.println(sco);
 		Note[] notasFullSong = null;
@@ -486,7 +486,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		ArrayList<Note> notasCancion = new ArrayList<Note>();
 		int numeroNotas = 0;
 		for (int i = 0; i < partes.length; i++) {
-			System.out.println(partes[i].getInstrument());
+			
 			if (partes[i].getInstrument() == 0) {
 				tamPhr = partes[i].getSize();
 				Phrase[] ph = new Phrase[tamPhr];
@@ -518,24 +518,27 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		 /*
 		  * 
 		  */
-		for(int i = 0; i < notasFullSong.length; i++)
-		{
+		for(int i = 0; i < notasFullSong.length; i++){
+			System.out.println(notasFullSong.length);
 			 int index=notasFullSong[i].getPitch();
 			 for (BotonTecla t : Teclas) {
+				 	Temporalizador temp = new Temporalizador(t.getNombre());
 					String s = t.getTecla();
 					String s2 = tr.getPitchesToTeclas().get(""+index);
 					if (s.equals(s2)) {
 						t.setBackground(Color.blue);
-						
+						 temp.iniciar();
 						 
-						if(t.getTecla().length()>2)t.setBackground(Color.black);
+						if(t.getText().length()>2)t.setBackground(Color.black);
 						 else t.setBackground(Color.WHITE);
 						
 					}
-					//System.out.println(notasFullSong[i].getDuration());
+					
 
 				}
 			
+			
+			 
 			 
 			
 		}
