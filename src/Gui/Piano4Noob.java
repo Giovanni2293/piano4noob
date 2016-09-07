@@ -30,12 +30,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.util.HashMap;
-
 import javax.swing.SwingConstants;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 import java.awt.Panel;
 import java.awt.Font;
 
@@ -43,8 +45,21 @@ import javax.swing.BoxLayout;
 import javax.swing.JSlider;
 import java.awt.Component;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.SpringLayout;
+import javax.swing.border.EtchedBorder;
+import java.awt.Rectangle;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Piano4Noob implements KeyListener, MouseListener {
 
@@ -61,10 +76,11 @@ public class Piano4Noob implements KeyListener, MouseListener {
 						// cambios dinamicos de color
 	BotonTecla[] Teclas; // arreglo que contiene los botones de la gui con su
 							// respectiva ubicacion
-	
+
 	String[] textoLbLibre; // arreglo que contine los string que representan las
 							// ultimas teclas tocadas
-	Traductor tr;  //elemento traductor
+	Traductor tr; // elemento traductor
+	private static JFileChooser fileChooser = new JFileChooser("src\\multimedia");
 
 	/**
 	 * Launch the application.
@@ -162,28 +178,34 @@ public class Piano4Noob implements KeyListener, MouseListener {
 
 		JPanel panelIntPista = new JPanel();
 		panelDificultad.add(panelIntPista);
-		panelIntPista.setLayout(new BoxLayout(panelIntPista, BoxLayout.X_AXIS));
+		panelIntPista.setLayout(null);
 
 		JLabel lblPista = new JLabel("Pista");
+		lblPista.setBounds(0, 20, 50, 20);
 		lblPista.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblPista.setBorder(new EmptyBorder(0, 10, 0, 10));
 		panelIntPista.add(lblPista);
 
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBorder(new EmptyBorder(15, 5, 15, 5));
-		panelIntPista.add(comboBox);
+		JLabel lblFileSelect = new JLabel("browse your flie");
+		lblFileSelect.setBounds(new Rectangle(55, 20, 145, 20));
+		lblFileSelect.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panelIntPista.add(lblFileSelect);
+
+		JButton BrowseFile = new JButton("...");
+		BrowseFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				openFile();
+			}
+		});
+		BrowseFile.setBounds(210, 20, 30, 20);
+		panelIntPista.add(BrowseFile);
 
 		JPanel display = new JPanel();
 		display.setBackground(Color.DARK_GRAY);
 		display.setBounds(300, 65, 650, 143);
 		panelDeControles.add(display);
 		display.setLayout(new GridLayout(0, 1, 0, 0));
-		
-		JPanel panel = new JPanel();
-		display.add(panel);
-
-		JLabel lblNewLabel = new JLabel("New label");
-		panel.add(lblNewLabel);
 
 		JPanel panelUsuario = new JPanel();
 		display.add(panelUsuario);
@@ -275,9 +297,9 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		guiTeclado = new UbicarTeclas(anchoParaBotones, 235, this);
 		Teclas = new BotonTecla[31];
 		Teclas = guiTeclado.getArPiano();
-		//for (int i = 31; 0 <= i; i--) {
-			for (int i = 31; 0 <= i; i--) {
-			
+		// for (int i = 31; 0 <= i; i--) {
+		for (int i = 31; 0 <= i; i--) {
+
 			if (i <= 18) {
 				blancas.add(Teclas[i]);
 			} else {
@@ -299,7 +321,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		etiquetaDeEstado.setBackground(Color.LIGHT_GRAY);
 		etiquetaDeEstado.setVerticalAlignment(SwingConstants.BOTTOM);
 		etiquetaDeEstado.setHorizontalAlignment(SwingConstants.LEFT);
-		tr=new Traductor();
+		tr = new Traductor();
 		Play.midiCycle(new Rest(JMC.HALF_NOTE)); // La clase Play pertenece a la
 													// libreria JMusic, el
 													// metodo midiCycle
@@ -352,13 +374,13 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		// TODO Auto-generated method stub
 		// System.out.println(bTemp.getText());
 		for (BotonTecla t : Teclas) {
-			//if (t.getBackground().equals(Color.gray)) {
-				
-				if (t.getText().length() >2)
-					t.setBackground(Color.black);
-				else
-					t.setBackground(Color.WHITE);
-			//qeq}
+			// if (t.getBackground().equals(Color.gray)) {
+
+			if (t.getText().length() > 2)
+				t.setBackground(Color.black);
+			else
+				t.setBackground(Color.WHITE);
+			// qeq}
 		}
 
 		r.setTemp("");
@@ -405,22 +427,40 @@ public class Piano4Noob implements KeyListener, MouseListener {
 	}
 
 	public void actualizaLLibre(String s) {
-		if(s!=null)
-		{
-		String tlblibre = " "; // String que se muestra en la marquesina de
-								// libre
-		for (int i = 0; i < textoLbLibre.length; i++) {
-			if (i < textoLbLibre.length - 1) {
-				textoLbLibre[i] = textoLbLibre[i + 1];
-			} else {
-				textoLbLibre[i] = s;
+		if (s != null) {
+			String tlblibre = " "; // String que se muestra en la marquesina de
+									// libre
+			for (int i = 0; i < textoLbLibre.length; i++) {
+				if (i < textoLbLibre.length - 1) {
+					textoLbLibre[i] = textoLbLibre[i + 1];
+				} else {
+					textoLbLibre[i] = s;
+				}
+				if (textoLbLibre[i] != null)
+					tlblibre += textoLbLibre[i] + "  ";
 			}
-			if (textoLbLibre[i] != null)
-				tlblibre += textoLbLibre[i] + "  ";
-		}
 
-		lblTeclaTocada.setText(tlblibre);
+			lblTeclaTocada.setText(tlblibre);
 		}
+	}
+
+	/**
+	 * Open function: open a file chooser to select a new image file, and then
+	 * display the chosen image.
+	 */
+	private void openFile() {
+		int returnVal = fileChooser.showOpenDialog(frmPianonoobs);
+		FileNameExtensionFilter filter= new FileNameExtensionFilter("MIDI", "midi","mid");
+		fileChooser.addChoosableFileFilter(filter);
+		fileChooser.removeChoosableFileFilter(fileChooser.getAcceptAllFileFilter());
+		fileChooser.setFileFilter(filter);
+
+
+		if (returnVal != JFileChooser.APPROVE_OPTION) {
+			return; // cancelled
+		}
+		File selectedFile = fileChooser.getSelectedFile();
+		return;
 	}
 
 }
