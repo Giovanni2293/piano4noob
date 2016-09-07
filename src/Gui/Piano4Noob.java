@@ -52,9 +52,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.SpringLayout;
 import javax.swing.border.EtchedBorder;
 import java.awt.Rectangle;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -449,18 +446,18 @@ public class Piano4Noob implements KeyListener, MouseListener {
 	 * display the chosen image.
 	 */
 	private void openFile() {
-		int returnVal = fileChooser.showOpenDialog(frmPianonoobs);
+		
 		FileNameExtensionFilter filter= new FileNameExtensionFilter("MIDI", "midi","mid");
 		fileChooser.addChoosableFileFilter(filter);
 		fileChooser.removeChoosableFileFilter(fileChooser.getAcceptAllFileFilter());
 		fileChooser.setFileFilter(filter);
-
+		int returnVal = fileChooser.showOpenDialog(frmPianonoobs);
 
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return; // cancelled
 		}
 		File selectedFile = fileChooser.getSelectedFile();
-		return;
+		
 	}
 
 }
