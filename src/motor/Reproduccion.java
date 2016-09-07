@@ -1,5 +1,6 @@
 package motor;
 import jm.music.data.Note;
+import jm.music.data.Part;
 import jm.music.data.Phrase;
 import jm.music.data.Rest;
 import jm.util.Play;
@@ -41,6 +42,15 @@ public class Reproduccion {
 	     
 		}
 	     
+	}
+	
+	/**
+	 * Reproduce el sonido de una parte hasta que este termine.
+	 * @param p
+	 */
+	public void reproducirParte(Part p)
+	{ 
+		if (p!=null)Play.midi(p);
 	}
 	
 	
