@@ -23,16 +23,7 @@ public class Acorde {
 		
 	}
 	
-	
-	public static void main(String[] args) {
 
-
-		getAcordeDisminuido("C6");
-
-		
-		
-	}
-	
 	public static String[] getAcordeMayor(String raiz) {
 		return generarAcorde(raiz,4,7);
 	}
@@ -97,14 +88,16 @@ public class Acorde {
 	    {
 	    	desplazamiento = desplazamiento-12;
 	    }
+	    System.out.println("desplazamiento1: " + desplazamiento);
 		acorde[0] = raiz;
 		acorde[1] = arreglo.get(desplazamiento);
 		desTemp = posicion+pos2;
+		desplazamiento = desTemp;
 		if (desTemp>31)
 		{
 			desplazamiento = desTemp- 12;
-			System.out.println(desplazamiento);
 		}
+		System.out.println("desplazamiento2: " + desplazamiento);
 		acorde[2] = arreglo.get(desplazamiento);
 		acordeP=obtenerPiezaMusical(acorde);
 		System.out.println(acorde[0]);
