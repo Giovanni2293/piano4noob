@@ -526,12 +526,15 @@ public class Piano4Noob implements KeyListener, MouseListener {
 					String s2 = tr.getPitchesToTeclas().get(""+index);
 					if (s.equals(s2)) {
 						t.setBackground(Color.blue);
-						 Play.midi(notasFullSong[i]);
+						 Play.midiCycle(notasFullSong[i]);
 						 Play.stopMidiCycle();
 						 
-						// if(t.getTecla().length()>2)t.setBackground(Color.black);
-						 //else t.setBackground(Color.WHITE);
+						 if(t.getTecla().length()>2)t.setBackground(Color.black);
+						 else t.setBackground(Color.WHITE);
+						
 					}
+					System.out.println(notasFullSong[i].getDuration());
+
 				}
 			
 			 
