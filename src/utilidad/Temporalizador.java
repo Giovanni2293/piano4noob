@@ -4,8 +4,10 @@
 
 package utilidad;
 
+import jm.music.data.Note;
+import jm.util.Play;
 
-public class MediadorHR {
+public class Temporalizador {
 	
     /*
      * status se encarga de mantener con vida el hilo y step es el numero de ejecucion del hilo 
@@ -14,7 +16,23 @@ public class MediadorHR {
 	
 	private boolean status;
     private static int step;
+    private Note n;
+    private double tiempoNota;
+    
+  
+    
  
+
+
+	public Temporalizador(Note n) {
+		super();
+		this.n = n;
+		tiempoNota = n.getDuration();
+		
+		
+	}
+
+
 	/**
 	 * Inicia la ejecucion del hilo
 	 */
@@ -33,7 +51,10 @@ public class MediadorHR {
 	    public void step()
 	    {
 	    	step++;
-	    	System.out.println(step + "ejecucion");
+	    	System.out.println(step + "ejecucion" );
+	    	Play.midiCycle(n);
+	    	Play.stopMidiCycle();
+	    	detener();
 	    }
 		
 	    
@@ -65,5 +86,7 @@ public class MediadorHR {
 			return step;
 		}
 		
-		
+		public double getTiempoNota(){
+			return tiempoNota;
+		}
 }

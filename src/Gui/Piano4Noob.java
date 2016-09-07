@@ -23,7 +23,9 @@ import jm.music.data.Phrase;
 import motor.Piano;
 import motor.Reproduccion;
 import utilidad.BotonTecla;
+import utilidad.Hilo;
 import utilidad.STecla;
+import utilidad.Temporalizador;
 import utilidad.Traductor;
 import utilidad.UbicarTeclas;
 
@@ -86,7 +88,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 	Traductor tr; // elemento traductor
 	private static JFileChooser fileChooser = new JFileChooser("src\\multimedia");
 	JLabel lblFileSelect; // etiqueta con el nombre de la pista
-	Note[] allSongNotes ;
+	Note[] allSongNotes;
 
 	/**
 	 * Launch the application.
@@ -201,11 +203,9 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		BrowseFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				File fil=openFile();
-				allSongNotes= desglosarPista(fil);
-				Phrase p= new Phrase(allSongNotes);
-				Play.midiCycle(p);
-				
+				File fil = openFile();
+				allSongNotes = desglosarPista(fil);
+
 			}
 		});
 		BrowseFile.setBounds(210, 20, 30, 20);
@@ -477,26 +477,71 @@ public class Piano4Noob implements KeyListener, MouseListener {
 
 	public Note[] desglosarPista(File selectedFile) {
 		Score sco = Read.midiOrJmWithNoMessaging(selectedFile);
-		Part[] partes = sco.getPartArray();
-		Note[] notasSong= null;
+		
+		Note[] notasFullSong = null;
+		int tamPart, tamPhr, tamNota;
+		tamPart = sco.getSize();
+		Part[] partes = new Part[tamPart];
+		partes = sco.getPartArray();
+		
 		ArrayList<Note> notasCancion = new ArrayList<Note>();
 		int numeroNotas = 0;
-		for (Part p2 : partes) {
-			Phrase[] ph = p2.getPhraseArray();
-			for (Phrase ph2 : ph) {
-				notasSong = ph2.getNoteArray();
+		for (int i = 0; i < partes.length; i++) {
+			
+			if (partes[i].getInstrument() == 0) {
+				tamPhr = partes[i].getSize();
+				Phrase[] ph = new Phrase[tamPhr];
+				ph = partes[i].getPhraseArray();
+				for (int k = 0; k < ph.length; k++) {
+					tamNota = ph[k].getSize();
+					Note[] notasSong = new Note[tamNota];
+					notasSong = ph[k].getNoteArray();
+					for (int j = 0; j < notasSong.length; j++) {
+						notasCancion.add(notasSong[j]);
+					}
+				}
 			}
-			for (int j = 0; j < notasSong.length; j++) {
-				notasCancion.add(notasSong[j]);
-			}
+			/*
+			*/
 		}
-		notasCancion.toArray(notasSong);
-		/*
-		 * for(int i =0; i< notasSong.length;i++) {
-		 * r.play(Piano.getPiano().getTecla(notasSong[i].getNote()).getNota());
-		 * }
-		 */
-		return notasSong;
+		notasFullSong = new Note[notasCancion.size()];
+		for (int i = 0; i < notasCancion.size(); i++) {
+			notasFullSong[i] = notasCancion.get(i);
+
+		}
+		// notasCancion.toArray(notasFullSong);
+
+		//Phrase p = new Phrase(notasFullSong);
+		//Score sco2 = new Score(new Part(p));
+		
+		//Play.midiCycle(sco);
+		//Play.stopMidiCycle();
+		 /*
+		  * 
+		  */
+		for(int i = 0; i < notasFullSong.length; i++)
+		{
+			 int index=notasFullSong[i].getPitch();
+			 for (BotonTecla t : Teclas) {
+					String s = t.getTecla();
+					String s2 = tr.getPitchesToTeclas().get(""+index);
+					
+					if (s.equals(s2)) {
+						t.setBackground(new Color(116,171,245));
+						if(t.getTecla().length()>2)t.setBackground(Color.BLACK);
+						 else t.setBackground(Color.WHITE);					
+					}
+				}
+			// Temporalizador temp = new Temporalizador(notasFullSong[i]);
+			//	temp.iniciar();		 
+				
+				 
+				 
+			
+			 
+			
+		}
+		return notasFullSong;
 	}
 
 }

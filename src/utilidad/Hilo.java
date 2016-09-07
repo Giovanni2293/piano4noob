@@ -8,7 +8,7 @@ public class Hilo extends Thread {
     /*
      * se crean dos objetos colaboradores. Mediador que se encarga de contener la logica que se ejecutara en el hilo y el hilo necesario para singleton
      */
-	private  MediadorHR m;
+	private  Temporalizador m;
 	private static  Hilo h;
 
 	
@@ -17,7 +17,7 @@ public class Hilo extends Thread {
  * la logica de corrida del hilo y se define con nombre Coor. Finalmente se inicializa.
  * @param m
  */
-	private Hilo(MediadorHR m) {
+	private Hilo(Temporalizador m ) {
 		super("Coor");
 		this.m = m;
 		this.start();
@@ -28,7 +28,7 @@ public class Hilo extends Thread {
  * @param m
  * @return h Hilo en ejecucion
  */
-	public static Hilo getHilo(MediadorHR m) {
+	public static Hilo getHilo(Temporalizador m) {
 		if(h == null){
 			h = new Hilo(m);
 		}

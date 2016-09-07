@@ -7,10 +7,13 @@ import java.util.LinkedHashMap;
 public class Traductor {
 	private LinkedHashMap<String, String> Notas;
 	private LinkedHashMap<String, String> Teclas;
+	 private LinkedHashMap<String, String> PitchToTecla;
+	
 	public Traductor() {
 
 		crearMapaDeNotas();
 		crearMapaDeTeclas();
+		pitchesToTeclas() ;
 	}
 	/**
 	 * Guarda una tecla como clave y una nota como valor
@@ -90,12 +93,53 @@ public class Traductor {
 		Teclas.put( "B5","P");
 		Teclas.put( "C6", "Acento Agudo Muerto");
 	}
-
+	/**
+	 * Guarda una Nota como clave y una tecla como valor;
+	 */
+	public void pitchesToTeclas() {
+		PitchToTecla = new LinkedHashMap();
+		PitchToTecla.put( "53","Z");
+		PitchToTecla.put( "54","S");
+		PitchToTecla.put( "55","X");
+		PitchToTecla.put( "56","D");
+		PitchToTecla.put( "57","C");
+		PitchToTecla.put( "58","F");
+		PitchToTecla.put( "59","V");
+		PitchToTecla.put( "60","B");
+		PitchToTecla.put( "61","H");
+		PitchToTecla.put( "62","N");
+		PitchToTecla.put( "63","J");
+		PitchToTecla.put( "64","M");
+		PitchToTecla.put( "65","Coma");
+		PitchToTecla.put( "66","L");
+		PitchToTecla.put( "67", "Q");
+		PitchToTecla.put( "68","2");
+		PitchToTecla.put( "69","W");
+		PitchToTecla.put( "70","3");
+		PitchToTecla.put( "71","E");
+		PitchToTecla.put( "72","R");
+		PitchToTecla.put( "73","5");
+		PitchToTecla.put( "74","T");
+		PitchToTecla.put( "75","6");
+		PitchToTecla.put( "76","Y");
+		PitchToTecla.put( "77","U");
+		PitchToTecla.put( "78","8");
+		PitchToTecla.put( "79","I");
+		PitchToTecla.put( "80","9");
+		PitchToTecla.put( "81","O");
+		PitchToTecla.put( "82","0");
+		PitchToTecla.put( "83","P");
+		PitchToTecla.put( "84", "Acento Agudo Muerto");
+	}
+	
 	public LinkedHashMap<String, String> getMapaDeTeclas() {
 		return Teclas;
 	}
 	public LinkedHashMap<String, String> getMapaDeNotas(){
 		return Notas;
+	}
+	public LinkedHashMap<String, String> getPitchesToTeclas(){
+		return PitchToTecla;
 	}
 
 }
