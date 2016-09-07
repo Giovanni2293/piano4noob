@@ -25,7 +25,10 @@ public class Acorde {
 	
 	
 	public static void main(String[] args) {
+
+
 		getAcordeDisminuido("C6");
+
 		
 		
 	}
