@@ -25,7 +25,11 @@ public class Acorde {
 	
 	
 	public static void main(String[] args) {
-		getAcordeMayor("C6");
+		getAcordeMenor("C3");
+		getAcordeMenor("C3");
+		getAcordeMenor("C3");
+		getAcordeMenor("C3");
+		getAcordeMenor("C3");
 		
 		
 	}

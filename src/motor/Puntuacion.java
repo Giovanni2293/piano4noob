@@ -10,7 +10,7 @@ package motor;
  * 
  */
 
-public class Score {
+public class Puntuacion {
 
 	private static int aciertos, teclasPresionadas, fallos = 0;
 	private static long score = 0;

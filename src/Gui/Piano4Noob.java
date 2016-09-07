@@ -14,7 +14,13 @@ import java.awt.Toolkit;
 
 import jm.JMC;
 import jm.music.data.Rest;
+import jm.music.data.Score;
 import jm.util.Play;
+import jm.util.Read;
+import jm.music.data.Note;
+import jm.music.data.Part;
+import jm.music.data.Phrase;
+import motor.Piano;
 import motor.Reproduccion;
 import utilidad.BotonTecla;
 import utilidad.STecla;
@@ -31,6 +37,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.SwingConstants;
 import javax.swing.JMenuBar;
@@ -458,10 +465,39 @@ public class Piano4Noob implements KeyListener, MouseListener {
 			return; // cancelled
 		}
 		File selectedFile = fileChooser.getSelectedFile();
-		lblFileSelect.setText(selectedFile.getName());
-		System.out.println(selectedFile);
+		int index = selectedFile.getName().lastIndexOf('.');
+		lblFileSelect.setText(selectedFile.getName().substring(0,index));
+		System.out.println(selectedFile.getAbsolutePath());
+		//Play.mid(selectedFile.getAbsolutePath());
 		
-		
-	}
+		Score sco = Read.midiOrJmWithNoMessaging(selectedFile);
+        Part[] partes = sco.getPartArray();
+        Phrase p = null;  
+		/*System.out.println(sco);
+		System.out.println(partes.length);
+		System.out.println(partes);*/
+		Note[] notasSong= null;
+		ArrayList<Note> notasCancion= new ArrayList<Note>();
+		int numeroNotas=0;
+		for(Part p2 :partes)
+		{
+			Phrase[] ph=p2.getPhraseArray();
+			for(Phrase ph2 : ph)
+			{
+				notasSong=ph2.getNoteArray();
+			}
+			for(int j=0;j<notasSong.length;j++)
+			{
+				notasCancion.add(notasSong[j]);
+			}
+		}
+				p= new Phrase();
+				notasCancion.toArray(notasSong);
+		p.addNoteList(notasSong);
+		/*for(int i =0; i< notasSong.length;i++)
+		{
+			r.play(Piano.getPiano().getTecla(notasSong[i].getNote()).getNota());
+		}*/
+}
 
 }
