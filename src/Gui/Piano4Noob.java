@@ -85,7 +85,8 @@ public class Piano4Noob implements KeyListener, MouseListener {
 							// ultimas teclas tocadas
 	Traductor tr; // elemento traductor
 	private static JFileChooser fileChooser = new JFileChooser("src\\multimedia");
-	JLabel lblFileSelect; //etiqueta con el nombre de la pista
+	JLabel lblFileSelect; // etiqueta con el nombre de la pista
+	Note[] allSongNotes ;
 
 	/**
 	 * Launch the application.
@@ -200,7 +201,11 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		BrowseFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				openFile();
+				File fil=openFile();
+				allSongNotes= desglosarPista(fil);
+				Phrase p= new Phrase(allSongNotes);
+				Play.midiCycle(p);
+				
 			}
 		});
 		BrowseFile.setBounds(210, 20, 30, 20);
@@ -453,51 +458,45 @@ public class Piano4Noob implements KeyListener, MouseListener {
 	 * Open function: open a file chooser to select a new image file, and then
 	 * display the chosen image.
 	 */
-	private void openFile() {
-		
-		FileNameExtensionFilter filter= new FileNameExtensionFilter("MIDI", "midi","mid");
+	private File openFile() {
+
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("MIDI", "midi", "mid");
 		fileChooser.addChoosableFileFilter(filter);
 		fileChooser.removeChoosableFileFilter(fileChooser.getAcceptAllFileFilter());
 		fileChooser.setFileFilter(filter);
 		int returnVal = fileChooser.showOpenDialog(frmPianonoobs);
 
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
-			return; // cancelled
+			return null; // cancelled
 		}
 		File selectedFile = fileChooser.getSelectedFile();
 		int index = selectedFile.getName().lastIndexOf('.');
-		lblFileSelect.setText(selectedFile.getName().substring(0,index));
-		System.out.println(selectedFile.getAbsolutePath());
-		//Play.mid(selectedFile.getAbsolutePath());
-		
+		lblFileSelect.setText(selectedFile.getName().substring(0, index));
+		return selectedFile;
+	}
+
+	public Note[] desglosarPista(File selectedFile) {
 		Score sco = Read.midiOrJmWithNoMessaging(selectedFile);
-        Part[] partes = sco.getPartArray();
-        Phrase p = null;  
-		/*System.out.println(sco);
-		System.out.println(partes.length);
-		System.out.println(partes);*/
+		Part[] partes = sco.getPartArray();
 		Note[] notasSong= null;
-		ArrayList<Note> notasCancion= new ArrayList<Note>();
-		int numeroNotas=0;
-		for(Part p2 :partes)
-		{
-			Phrase[] ph=p2.getPhraseArray();
-			for(Phrase ph2 : ph)
-			{
-				notasSong=ph2.getNoteArray();
+		ArrayList<Note> notasCancion = new ArrayList<Note>();
+		int numeroNotas = 0;
+		for (Part p2 : partes) {
+			Phrase[] ph = p2.getPhraseArray();
+			for (Phrase ph2 : ph) {
+				notasSong = ph2.getNoteArray();
 			}
-			for(int j=0;j<notasSong.length;j++)
-			{
+			for (int j = 0; j < notasSong.length; j++) {
 				notasCancion.add(notasSong[j]);
 			}
 		}
-				p= new Phrase();
-				notasCancion.toArray(notasSong);
-		p.addNoteList(notasSong);
-		/*for(int i =0; i< notasSong.length;i++)
-		{
-			r.play(Piano.getPiano().getTecla(notasSong[i].getNote()).getNota());
-		}*/
-}
+		notasCancion.toArray(notasSong);
+		/*
+		 * for(int i =0; i< notasSong.length;i++) {
+		 * r.play(Piano.getPiano().getTecla(notasSong[i].getNote()).getNota());
+		 * }
+		 */
+		return notasSong;
+	}
 
 }
