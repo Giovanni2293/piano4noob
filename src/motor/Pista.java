@@ -147,7 +147,8 @@ public class Pista {
 	 * Este metodo carga y reproduce un archivo del paquete multimedia llamado lilium
 	 */
 	public void lilium(){
-		Play.mid("src\\multimedia\\lilium.midi");
+		//Play.mid("src\\multimedia\\lilium.midi");
+		Play.mid("src\\multimedia\\rollingGirl.midi");
 	}
 	/**
 	 * Detiene una reproduccion
