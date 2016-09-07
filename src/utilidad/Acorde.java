@@ -25,98 +25,41 @@ public class Acorde {
 	
 	
 	public static void main(String[] args) {
-		getAcordeMenor("C3");
-		getAcordeMenor("C3");
-		getAcordeMenor("C3");
-		getAcordeMenor("C3");
-		getAcordeMenor("C3");
+
+
+		getAcordeDisminuido("C6");
+
 		
 		
 	}
 	
 	public static String[] getAcordeMayor(String raiz) {
-		String[] acorde = new String[3];
-		Part acordeP;
-		int posicion = getPosArreglo(raiz);
-		int desplazamiento = (posicion + 4) % 32;
-		acorde[0] = raiz;
-		acorde[1] = getElementByIndex(desplazamiento);
-		desplazamiento = (desplazamiento + 3) % 32;
-		acorde[2] = getElementByIndex(desplazamiento);
-		acordeP=obtenerParte(acorde);
-		System.out.println(acorde[0]);
-		System.out.println(acorde[1]);
-		System.out.println(acorde[2]);
-		r.reproducirParte(acordeP);
-		return acorde;
+		return generarAcorde(raiz,4,7);
 	}
 
 	public static String[] getAcordeMenor(String raiz) {
-		String[] acorde = new String[3];
-		Part acordeP;
-		int posicion = getPosArreglo(raiz);
-		int desplazamiento = (posicion + 3) % 32;
-		acorde[0] = raiz;
-		acorde[1] = getElementByIndex(desplazamiento);
-		desplazamiento = (desplazamiento + 4) % 32;
-		acorde[2] = getElementByIndex(desplazamiento);
-		acordeP=obtenerParte(acorde);
-		System.out.println(acorde[0]);
-		System.out.println(acorde[1]);
-		System.out.println(acorde[2]);
-		r.reproducirParte(acordeP);
-		return acorde;
+		
+		return generarAcorde(raiz,3,7);
 
 	}
 
 	public static String[] getAcordeAumentado(String raiz) {
-		String[] acorde = new String[3];
-		int posicion = getPosArreglo(raiz);
-		int desplazamiento = (posicion + 4) % 32;
-		Part acordeP;
-		acordeP=obtenerParte(acorde);
-		acorde[0] = raiz;
-		acorde[1] = getElementByIndex(desplazamiento);
-		desplazamiento = (desplazamiento + 4) % 32;
-		acorde[2] = getElementByIndex(desplazamiento);
-		System.out.println(acorde[0]);
-		System.out.println(acorde[1]);
-		System.out.println(acorde[2]);
-		r.reproducirParte(acordeP);
-		return acorde;
+		return generarAcorde(raiz,4,8);
 	}
 
 	public static String[] getAcordeDisminuido(String raiz) {
-		String[] acorde = new String[3];
-		int posicion = getPosArreglo(raiz);
-		int desplazamiento = (posicion + 3) % 32;
-		acorde[0] = raiz;
-		acorde[1] = getElementByIndex(desplazamiento);
-		desplazamiento = (desplazamiento + 3) % 32;
-		acorde[2] = getElementByIndex(desplazamiento);
-		System.out.println(acorde[0]);
-		System.out.println(acorde[1]);
-		System.out.println(acorde[2]);
-		return acorde;
+		return generarAcorde(raiz,3,6);
 	}
 
-	public static String getElementByIndex(int i) {
+	/**
+	 * Metodo que devuelve un elemento por su indice directamente desde un hashmap 
+	 * No se esta utilizando pero es interesante.
+	 * @param i
+	 * @return
+	 */
+	private static String getElementByIndex(int i) {
 		return l.get(l.keySet().toArray()[i]);
 	}
-
-	public static int getPosArreglo(String raiz) {
-		Iterator<String> i = arreglo.iterator();
-		int n = 0, encontrado = 0;
-		while (i.hasNext()) {
-			String s = (String) i.next();
-			if (raiz.equals(s)) {
-				encontrado = n;
-			}
-			n++;
-		}
-		return encontrado;
-	}
-	
 
 	/**
 	 * Metodo encargado de obtener una parte con el acorde de 3 notas ingresado previamente. Si se crea el arreglo de notas
@@ -124,7 +67,7 @@ public class Acorde {
 	 * @param a (Arreglo de tamaño 3 con las 3 notas del acorde)
 	 * @return Part (Parte a reproducirse mediante Play.midi)
 	 */
-	private static Part obtenerParte(String[] a)
+	private static Part obtenerPiezaMusical(String[] a)
 	{
 		Part p = new Part();
 		if (a.length==3)
@@ -142,6 +85,33 @@ public class Acorde {
 		
 	}
 	
-	
+	public static String[] generarAcorde(String raiz,int pos1,int pos2)
+	{
+		String[] acorde = new String[3];
+		Part acordeP;
+		int posicion = arreglo.indexOf(raiz);
+		System.out.println( arreglo.indexOf(raiz));
+		int desplazamiento = posicion + pos1;
+		int desTemp;
+	    if(desplazamiento>31)
+	    {
+	    	desplazamiento = desplazamiento-12;
+	    }
+		acorde[0] = raiz;
+		acorde[1] = arreglo.get(desplazamiento);
+		desTemp = posicion+pos2;
+		if (desTemp>31)
+		{
+			desplazamiento = desTemp- 12;
+			System.out.println(desplazamiento);
+		}
+		acorde[2] = arreglo.get(desplazamiento);
+		acordeP=obtenerPiezaMusical(acorde);
+		System.out.println(acorde[0]);
+		System.out.println(acorde[1]);
+		System.out.println(acorde[2]);
+		r.reproducirParte(acordeP);
+		return acorde;
+	}
 
 }
