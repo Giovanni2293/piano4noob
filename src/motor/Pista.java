@@ -8,6 +8,7 @@ import jm.music.data.Phrase;
 import jm.music.data.Rest;
 import jm.util.Play;
 import jm.util.View;
+import jm.util.Write;
 import jm.music.tools.*;
 /**
  * Esta es una clase de apoyo encargara de cargar diferentes pistas(Arreglos de sonidos) se usara en la implementacion de aprendizaje y practica 
@@ -136,7 +137,7 @@ public class Pista {
 		p.add(n);
 		n = new Note(JMC.C4,JMC.HALF_NOTE);
 		p.add(n);
-		
+		Write.midi(p,"src\\multimedia\\estrellita.midi");
 		
 	
 		//View.notate(p);

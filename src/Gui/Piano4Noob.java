@@ -484,15 +484,18 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		ArrayList<Note> notasCancion = new ArrayList<Note>();
 		int numeroNotas = 0;
 		for (int i = 0; i < partes.length; i++) {
-			tamPhr = partes[i].getSize();
-			Phrase[] ph = new Phrase[tamPhr];
-			ph = partes[i].getPhraseArray();
-			for (int k = 0; k < ph.length; k++) {
-				tamNota = ph[k].getSize();
-				Note[] notasSong = new Note[tamNota];
-				notasSong = ph[k].getNoteArray();
-				for (int j = 0; j < notasSong.length; j++) {
-					notasCancion.add(notasSong[j]);
+			System.out.println(partes[i].getInstrument());
+			if (partes[i].getInstrument() == 0) {
+				tamPhr = partes[i].getSize();
+				Phrase[] ph = new Phrase[tamPhr];
+				ph = partes[i].getPhraseArray();
+				for (int k = 0; k < ph.length; k++) {
+					tamNota = ph[k].getSize();
+					Note[] notasSong = new Note[tamNota];
+					notasSong = ph[k].getNoteArray();
+					for (int j = 0; j < notasSong.length; j++) {
+						notasCancion.add(notasSong[j]);
+					}
 				}
 			}
 			/*
@@ -501,18 +504,21 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		notasFullSong = new Note[notasCancion.size()];
 		for (int i = 0; i < notasCancion.size(); i++) {
 			notasFullSong[i] = notasCancion.get(i);
-			System.out.println(notasFullSong[i]);
 
 		}
 		// notasCancion.toArray(notasFullSong);
 
 		Phrase p = new Phrase(notasFullSong);
-		Play.midi(p);
-		/*
-		 * for(int i =0; i< notasSong.length;i++) {
-		 * r.play(Piano.getPiano().getTecla(notasSong[i].getNote()).getNota());
-		 * }
-		 */
+		Score sco2 = new Score(new Part(p));
+		 Play.midiCycle(sco2);
+		 Play.stopMidiCycle();
+		//Play.midiCycle(sco);
+		//Play.stopMidiCycle();
+		 /*
+								 * for(int i =0; i< notasSong.length;i++) {
+								 * r.play(Piano.getPiano().getTecla(notasSong[i]
+								 * .getNote()).getNota()); }
+								 */
 		return notasFullSong;
 	}
 
