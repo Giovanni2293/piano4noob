@@ -23,6 +23,7 @@ import jm.music.data.Phrase;
 import motor.Piano;
 import motor.Reproduccion;
 import utilidad.BotonTecla;
+import utilidad.Hilo;
 import utilidad.STecla;
 import utilidad.Traductor;
 import utilidad.UbicarTeclas;
@@ -509,10 +510,9 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		}
 		// notasCancion.toArray(notasFullSong);
 
-		Phrase p = new Phrase(notasFullSong);
-		Score sco2 = new Score(new Part(p));
-		Play.midiCycle(sco2);
-		Play.stopMidiCycle();
+		//Phrase p = new Phrase(notasFullSong);
+		//Score sco2 = new Score(new Part(p));
+		
 		//Play.midiCycle(sco);
 		//Play.stopMidiCycle();
 		 /*
@@ -523,11 +523,18 @@ public class Piano4Noob implements KeyListener, MouseListener {
 			 int index=notasFullSong[i].getPitch();
 			 for (BotonTecla t : Teclas) {
 					String s = t.getTecla();
-					//String s2 = tr.getPitchesToTeclas();
+					String s2 = tr.getPitchesToTeclas().get(""+index);
 					if (s.equals(s2)) {
-						t.setBackground(Color.gray);
+						t.setBackground(Color.blue);
+						 Play.midi(notasFullSong[i]);
+						 Play.stopMidiCycle();
+						 
+						// if(t.getTecla().length()>2)t.setBackground(Color.black);
+						 //else t.setBackground(Color.WHITE);
 					}
 				}
+			
+			 
 			
 		}
 		return notasFullSong;
