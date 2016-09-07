@@ -6,7 +6,7 @@ import jm.music.data.Rest;
 import jm.util.Play;
 import jm.music.data.Score;
 
-import utilidad.MediadorHR;
+import utilidad.Temporalizador;
 /**
  * Esta clase se encarga de reproducir pistas(aun no se ha implementado esta funcion) y sonidos
  * del piano en cuanto se accionan
@@ -17,7 +17,7 @@ import utilidad.MediadorHR;
 public class Reproduccion {
 	
 	private static Piano piano; //Es un objeto unico que inicializa las teclas y sus respectivos sonidos 
-	private MediadorHR m;  //Ejecuta la logica del hilo que se usa en este proceso
+	private Temporalizador m;  //Ejecuta la logica del hilo que se usa en este proceso
 	private int velocidad;  //Parametro que se usara para reproduccion de pistas(Aun no esta en uso)
 	private static String temp = ""; //una variable que ayuda a simular la pulsación de la tecla, es usada en Libre
 	private static Reproduccion repro; //El objeto piano cumple el patron singleton por lo tanto este parametro se refiere a un objeto statico

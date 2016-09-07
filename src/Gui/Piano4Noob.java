@@ -25,6 +25,7 @@ import motor.Reproduccion;
 import utilidad.BotonTecla;
 import utilidad.Hilo;
 import utilidad.STecla;
+import utilidad.Temporalizador;
 import utilidad.Traductor;
 import utilidad.UbicarTeclas;
 
@@ -473,7 +474,6 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		lblFileSelect.setText(selectedFile.getName().substring(0, index));
 		return selectedFile;
 	}
-
 	public Note[] desglosarPista(File selectedFile) {
 		Score sco = Read.midiOrJmWithNoMessaging(selectedFile);
 		// System.out.println(sco);
@@ -534,12 +534,19 @@ public class Piano4Noob implements KeyListener, MouseListener {
 						
 					}
 					System.out.println(notasFullSong[i].getDuration());
+						
+						 
+						if(t.getTecla().length()>2)t.setBackground(Color.black);
+						 else t.setBackground(Color.WHITE);
+						
+					}
+					//System.out.println(notasFullSong[i].getDuration());
 
 				}
 			
 			 
 			
-		}
+		
 		return notasFullSong;
 	}
 
