@@ -78,6 +78,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 							// ultimas teclas tocadas
 	Traductor tr; // elemento traductor
 	private static JFileChooser fileChooser = new JFileChooser("src\\multimedia");
+	JLabel lblFileSelect; //etiqueta con el nombre de la pista
 
 	/**
 	 * Launch the application.
@@ -183,7 +184,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		lblPista.setBorder(new EmptyBorder(0, 10, 0, 10));
 		panelIntPista.add(lblPista);
 
-		JLabel lblFileSelect = new JLabel("browse your flie");
+		lblFileSelect = new JLabel("browse your flie");
 		lblFileSelect.setBounds(new Rectangle(55, 20, 145, 20));
 		lblFileSelect.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panelIntPista.add(lblFileSelect);
@@ -457,6 +458,9 @@ public class Piano4Noob implements KeyListener, MouseListener {
 			return; // cancelled
 		}
 		File selectedFile = fileChooser.getSelectedFile();
+		lblFileSelect.setText(selectedFile.getName());
+		System.out.println(selectedFile);
+		
 		
 	}
 
