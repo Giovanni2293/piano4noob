@@ -481,6 +481,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		tamPart = sco.getSize();
 		Part[] partes = new Part[tamPart];
 		partes = sco.getPartArray();
+		System.out.println(sco);
 		ArrayList<Note> notasCancion = new ArrayList<Note>();
 		int numeroNotas = 0;
 		for (int i = 0; i < partes.length; i++) {
@@ -510,15 +511,25 @@ public class Piano4Noob implements KeyListener, MouseListener {
 
 		Phrase p = new Phrase(notasFullSong);
 		Score sco2 = new Score(new Part(p));
-		 Play.midiCycle(sco2);
-		 Play.stopMidiCycle();
+		Play.midiCycle(sco2);
+		Play.stopMidiCycle();
 		//Play.midiCycle(sco);
 		//Play.stopMidiCycle();
 		 /*
-								 * for(int i =0; i< notasSong.length;i++) {
-								 * r.play(Piano.getPiano().getTecla(notasSong[i]
-								 * .getNote()).getNota()); }
-								 */
+		  * 
+		  */
+		for(int i = 0; i < notasFullSong.length; i++)
+		{
+			 int index=notasFullSong[i].getPitch();
+			 for (BotonTecla t : Teclas) {
+					String s = t.getTecla();
+					//String s2 = tr.getPitchesToTeclas();
+					if (s.equals(s2)) {
+						t.setBackground(Color.gray);
+					}
+				}
+			
+		}
 		return notasFullSong;
 	}
 
