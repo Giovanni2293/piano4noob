@@ -21,6 +21,7 @@ public class Temporalizador {
 	private static int step;
 	private Note[] n;
 	private Traductor tr = new Traductor();
+	private Hilo hilo;
 
 	private BotonTecla[] Teclas = new BotonTecla[31];
 
@@ -28,7 +29,6 @@ public class Temporalizador {
 		super();
 		this.n = n;
 		Teclas = t;
-		
 
 	}
 
@@ -38,8 +38,8 @@ public class Temporalizador {
 
 	public void iniciar() {
 		status = true;
-		Hilo hilo = Hilo.getHilo(this);
-		step=0;
+		hilo = Hilo.getHilo(this);
+		step = 0;
 	}
 
 	/**
@@ -47,31 +47,30 @@ public class Temporalizador {
 	 */
 	public void step() {
 
-		
-		System.out.println(step + "ejecucion");
-
 		int index = n[step].getPitch();
 		for (BotonTecla t : Teclas) {
 
 			String s = t.getTecla();
 			String s2 = tr.getPitchesToTeclas().get("" + index);
 			if (s.equals(s2)) {
-				t.setBackground(new Color(116,171,245));
+				hilo.pause();
+				t.setBackground(new Color(116, 171, 245));
+				System.out.println(step + " : " + s2);
+				
 				Play.midiCycle(n[step]);
 				Play.stopMidiCycle();
+				hilo.pause();
 				
 				if (t.getText().length() > 2)
 					t.setBackground(Color.black);
 				else
 					t.setBackground(Color.WHITE);
-
 			}
-			
-
 		}
 		step++;
 		if (step >= n.length) {
 			detener();
+
 		}
 	}
 
@@ -100,7 +99,15 @@ public class Temporalizador {
 	public int getStep() {
 		return step;
 	}
-
 	
-
+	public void aumentarVelocidad(int multiplicador){
+		int actual;
+		actual = hilo.getVelocidad();
+		hilo.setVelocidad(actual * multiplicador);
+	}
+	public void disminuirVelicidad(int divisor){
+		int actual;
+		actual = hilo.getVelocidad();
+		hilo.setVelocidad((int)(actual / divisor) );
+	}
 }

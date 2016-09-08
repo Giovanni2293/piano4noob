@@ -10,6 +10,7 @@ public class Hilo extends Thread {
      */
 	private  Temporalizador m;
 	private static  Hilo h;
+	private int velocidad;
 
 	
 /**
@@ -21,6 +22,7 @@ public class Hilo extends Thread {
 		super("Coor");
 		this.m = m;
 		this.start();
+		velocidad = 500;
 
 	}
 /**
@@ -42,7 +44,7 @@ public class Hilo extends Thread {
 	public void run() {
 		while (m.getStatus()) {
 			m.step();
-			pause();
+			//pause();
 		}
 	}
 
@@ -50,11 +52,19 @@ public class Hilo extends Thread {
 	 * Temporizador que permite simular el paso del tiempo.
 	 * El parametro en Thread.sleep es un tiempo dado en milisegundos
 	 */
-	private void pause() {
+	public void pause() {
 		try {
-			Thread.sleep(500); // pause for 1000 milliseconds (1 second)
+			
+			Thread.sleep(velocidad); // pause for 1000 milliseconds (1 second)
 		} catch (InterruptedException exc) {
 		}
+	}
+	
+	public void setVelocidad(int vel){
+		velocidad = vel;
+	}
+	public int getVelocidad(){
+		return velocidad;
 	}
 
 }
