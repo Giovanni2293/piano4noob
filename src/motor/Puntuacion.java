@@ -13,6 +13,14 @@ package motor;
 public class Puntuacion {
 
 	private static int aciertos, teclasPresionadas, fallos = 0;
+	public static int getAciertos() {
+		return aciertos;
+	}
+
+	public static int getFallos() {
+		return fallos;
+	}
+
 	private static long score = 0;
 
 	public static void acierto() {

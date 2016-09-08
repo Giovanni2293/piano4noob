@@ -2,9 +2,10 @@ package motor;
 
 import java.util.ArrayList;
 
+import jm.music.data.Note;
 import utilidad.Aleatorios;
 
-public abstract class InterfazAcorde {
+public abstract class InterfazAcorde extends Modo{
 
 	protected final int numeroDeSecuencias = 50;
 	protected ArrayList<String[]> cancionString;
@@ -17,7 +18,7 @@ public abstract class InterfazAcorde {
 	}
 	
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		InterfazAcorde p = new PracticaAcorde();
 		p.generarGrupoAcordesMayor();
 		String[] xd  = new String[3];
@@ -31,14 +32,7 @@ public abstract class InterfazAcorde {
 		
 		p.terminarDeEvaluar();
 
-	}
-	
-	
-	
-	public abstract boolean Comparar(String[] acordeEstudiante) ;
-		
-	
-	
+	}*/
 	public void terminarDeEvaluar() {
 		resetIndice();
 	}
@@ -86,4 +80,10 @@ public abstract class InterfazAcorde {
 			cancionString.add(temp);
 		}
 	}
+	
+	public  Note[] getNoteArray()
+	{
+		return null;
+	}
+
 }

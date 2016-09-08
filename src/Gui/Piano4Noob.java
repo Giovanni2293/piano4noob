@@ -17,10 +17,14 @@ import jm.music.data.Rest;
 import jm.music.data.Score;
 import jm.util.Play;
 import jm.util.Read;
+import jm.util.Write;
 import jm.music.data.Note;
 import jm.music.data.Part;
 import jm.music.data.Phrase;
+import motor.AprendizajePista;
+import motor.Modo;
 import motor.Piano;
+import motor.Puntuacion;
 import motor.Reproduccion;
 import utilidad.BotonTecla;
 import utilidad.Hilo;
@@ -73,29 +77,29 @@ import javax.swing.event.ChangeEvent;
 public class Piano4Noob implements KeyListener, MouseListener {
 
 	private JFrame frmPianonoobs;
-	JLabel etiquetaDeEstado;
-	JLabel lblTeclaTocada;
+	private JLabel etiquetaDeEstado;
+	private JLabel lblTeclaTocada;
 	private STecla stec;
 	private Reproduccion r; // Elemento necesario para reproducir los sonidos de
 							// las teclas del piano que se accionan, las cuales
 							// estan asociadas al teclado
 	private UbicarTeclas guiTeclado;
 	private Toolkit t;
-	Color colorBoton; // almacena temporalmente el color de las teclas para los
+	private Color colorBoton; // almacena temporalmente el color de las teclas para los
 						// cambios dinamicos de color
-	BotonTecla[] Teclas; // arreglo que contiene los botones de la gui con su
+	private BotonTecla[] Teclas; // arreglo que contiene los botones de la gui con su
 							// respectiva ubicacion
 
-	String[] textoLbLibre; // arreglo que contine los string que representan las
+	private String[] textoLbLibre; // arreglo que contine los string que representan las
 							// ultimas teclas tocadas
-	Traductor tr; // elemento traductor
+	private Traductor tr; // elemento traductor
 	private static JFileChooser fileChooser = new JFileChooser("src\\multimedia");
-	JLabel lblFileSelect; // etiqueta con el nombre de la pista
-	Note[] allSongNotes;
-
-	// Control de reproduccion
+	private JLabel lblFileSelect; // etiqueta con el nombre de la pista
+	private Note[] allSongNotes;
+	private static String teclaPresionada;
+// Control de reproduccion
 	private boolean detenido;
-
+	private Note[] tempNotas;
 	private Tutor temp; // implementa un observer que tiene un hilo
 						// para darle vida al
 	// tutor
@@ -106,6 +110,11 @@ public class Piano4Noob implements KeyListener, MouseListener {
 	private int anchoPanelTeclas;
 	private int anchoDePantalla;
 	private int anchoParaBotones;
+	private static Modo modo;
+	private static JLabel lblTtAciertos;
+	private static JLabel lblTtFallos;
+
+	
 
 	/**
 	 * Launch the application.
@@ -170,8 +179,25 @@ public class Piano4Noob implements KeyListener, MouseListener {
 
 		JMenu Archivo = new JMenu("Archivo");
 		menuBar.add(Archivo);
-
+		modo=new AprendizajePista(1);
 		JMenuItem abrir = new JMenuItem("Abrir");
+		abrir.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				File fil = openFile();
+				allSongNotes = desglosarPista(fil);
+				if (Tutor.getCreado() == false) {
+					temp = new Tutor(allSongNotes, Teclas);
+					temp.iniciar();
+				} else {
+
+					JOptionPane.showMessageDialog(null, "Debe detener primero la pista para poder cargar una nueva\n"
+							+ "para detener la pista use el menu Reproducción, luego detener");
+
+				}
+
+			}
+		});
 		Archivo.add(abrir);
 
 		JMenu Reproduccin = new JMenu("Reproducci\u00F3n");
@@ -198,6 +224,34 @@ public class Piano4Noob implements KeyListener, MouseListener {
 
 		JMenuItem detenerPista = new JMenuItem("Detener Pista");
 		Reproduccin.add(detenerPista);
+
+		JMenu mnModo = new JMenu("Modo");
+		menuBar.add(mnModo);
+		
+		JMenuItem mntmAprendizajenotas = new JMenuItem("aprendizaje(notas)");
+		mntmAprendizajenotas.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				modo= new AprendizajePista(20);
+				tempNotas= modo.getNoteArray();
+				Phrase p= new Phrase(tempNotas);
+				Score s = new Score(new Part(p));
+				Write.midi(s,"src\\multimedia\\pruebaAprendizajepista.midi");
+			}
+		});
+		mnModo.add(mntmAprendizajenotas);
+		
+		JMenu mnAyuda = new JMenu("Ayuda");
+		menuBar.add(mnAyuda);
+		
+		JMenuItem mntmAcercaDePianonoob = new JMenuItem("Acerca de Piano4noob");
+		mntmAcercaDePianonoob.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				JOptionPane.showMessageDialog(null, "PIANO4NOOB \nVersion 0.1 \nBeta \nIngenieria del Software 3 \n2016 \nDe noobs para noobs ");
+			}
+		});
+		mnAyuda.add(mntmAcercaDePianonoob);
 		detenerPista.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -326,7 +380,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		panelUsuario.add(lblTeclaTocada);
 		lblTeclaTocada.setSize(new Dimension(610, 60));
 		lblTeclaTocada.setBorder(new EmptyBorder(10, 10, 10, 10));
-		textoLbLibre = new String[10];
+		textoLbLibre = new String[6];
 
 		JPanel aciertos = new JPanel();
 		aciertos.setBounds(100, 37, 150, 80);
@@ -338,7 +392,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		lblAciertos.setAlignmentX(Component.CENTER_ALIGNMENT);
 		aciertos.add(lblAciertos, BorderLayout.NORTH);
 
-		JLabel lblTtAciertos = new JLabel("000");
+		lblTtAciertos = new JLabel("000");
 		lblTtAciertos.setFont(new Font("Arial Black", Font.PLAIN, 28));
 		lblTtAciertos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTtAciertos.setAlignmentY(Component.CENTER_ALIGNMENT);
@@ -354,7 +408,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		lblFallos.setHorizontalAlignment(SwingConstants.CENTER);
 		errores.add(lblFallos, BorderLayout.NORTH);
 
-		JLabel lblTtFallos = new JLabel("000");
+		lblTtFallos = new JLabel("000");
 		lblTtFallos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTtFallos.setFont(new Font("Arial Black", Font.PLAIN, 28));
 		errores.add(lblTtFallos, BorderLayout.CENTER);
@@ -453,6 +507,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		// la etiqueta la gui por el simbolo de la tecla presionada
+		teclaPresionada =e.getKeyText(e.getKeyCode());
 		stec.selectTecla(e.getKeyText(e.getKeyCode())); // Segun la tecla
 														// presionada se
 														// reproduce un sonido
@@ -489,6 +544,13 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		r.setTemp("");
 
 	}
+	public static String getTeclaPresionada() {
+		return teclaPresionada;
+	}
+
+	public static Modo getModo() {
+		return modo;
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -515,6 +577,12 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		if (e.getSource() instanceof BotonTecla) {
 			r.setTemp("");
 		}
+	}
+	public static JLabel getLblTtAciertos() {
+		return lblTtAciertos;
+	}
+	public static JLabel getlblTtFallos() {
+		return lblTtFallos;
 	}
 
 	@Override
@@ -563,6 +631,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 			return null; // cancelled
 		}
 		File selectedFile = fileChooser.getSelectedFile();
+		Puntuacion.reset();
 		int index = selectedFile.getName().lastIndexOf('.');
 		lblFileSelect.setText(selectedFile.getName().substring(0, index));
 		return selectedFile;

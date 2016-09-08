@@ -8,8 +8,10 @@ import java.awt.Color;
 
 import com.sun.corba.se.impl.ior.GenericTaggedComponent;
 
+import Gui.Piano4Noob;
 import jm.music.data.Note;
 import jm.util.Play;
+import motor.Puntuacion;
 import motor.Reproduccion;
 
 public class Tutor {
@@ -27,7 +29,6 @@ public class Tutor {
 	private static boolean creado;
 
 	private BotonTecla[] Teclas = new BotonTecla[31];
-	
 
 	public Tutor(Note[] n, BotonTecla[] t) {
 		super();
@@ -35,7 +36,7 @@ public class Tutor {
 		creado = true;
 		Teclas = t;
 		hilo = new Hilo(this);
-		
+
 		step = 0;
 
 	}
@@ -71,7 +72,13 @@ public class Tutor {
 				hilo.pause();
 				t.setBackground(new Color(116, 171, 245));
 				System.out.println(step + " : " + s2);
-
+				String[] temAr = new String[1];
+				temAr[0] = Piano4Noob.getTeclaPresionada();
+				if (Piano4Noob.getModo().getModoVar().equals("ApPista")) {
+					Boolean bol = Piano4Noob.getModo().evaluar(s2, temAr);
+					Piano4Noob.getLblTtAciertos().setText(""+Puntuacion.getAciertos());
+					Piano4Noob.getlblTtFallos().setText(""+Puntuacion.getFallos());	
+				}
 				Play.midiCycle(n[step]);
 				Play.stopMidiCycle();
 				hilo.pause();
@@ -82,7 +89,7 @@ public class Tutor {
 					t.setBackground(Color.WHITE);
 			}
 		}
-		
+
 		step++;
 		if (step >= n.length) {
 
@@ -129,11 +136,12 @@ public class Tutor {
 		hilo.setVelocidad((int) (base / divisor));
 	}
 
-	public  void pausarHilo() {
-	hilo.pausarHilo();
-		
+	public void pausarHilo() {
+		hilo.pausarHilo();
+
 	}
-	public  void reanudar(){
+
+	public void reanudar() {
 		hilo.reanudarHilo();
 	}
 

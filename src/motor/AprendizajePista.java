@@ -10,23 +10,24 @@ public class AprendizajePista extends InterfacePista{
 
 	public AprendizajePista(int num) {
 		super(num);
+		setModoVar("ApPista");		
 	}
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		ap = new AprendizajePista(50);
-		ap.evaluar("",getTecArray(0));
-		ap.evaluar(getTecArray(1).getNombreNatural(),getTecArray(1));
-		ap.evaluar("",getTecArray(2));
-		ap.evaluar(getTecArray(3).getNombreNatural(),getTecArray(3));
+		String[] sarr= new String[1];
+		sarr[0]=getTecArray(0).getNombreNatural();
+		if(ap.evaluar(sarr[0], sarr))System.out.println("exito");;
+		}*/
 
-	}
+	public boolean evaluar(String tocada, String[] sugerida) {
 
-	public void evaluar(String tocada, Tecla sugerida) {
-
-		if (tocada.equals(sugerida.getNombreNatural())) {
-			System.out.println("bien");
+		if (tocada.equals(sugerida[0])) {
+			Puntuacion.acierto();
+			return true;
 		} else {
-			System.out.println("mal");
+			Puntuacion.fallos();
+			return false;
 
 		}
 

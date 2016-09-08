@@ -5,9 +5,10 @@ import java.util.HashMap;
 public class PracticaAcorde extends InterfazAcorde {
 
 	public PracticaAcorde() {
+		
 	}
 
-	public boolean Comparar(String[] acordeEstudiante) {
+	public boolean evaluar(String n,String[] acordeEstudiante) {
 		String[] acordeProfe = cancionString.get(indice);
 		HashMap<String, String> m = new HashMap<>();
 		boolean flag=false;

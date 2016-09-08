@@ -6,13 +6,17 @@ import jm.music.data.Note;
 import jm.music.data.Score;
 import utilidad.Aleatorios;
 
-public abstract class InterfacePista {
+public abstract class InterfacePista extends Modo{
 
 	public Aleatorios ran = new Aleatorios();
 	protected static InterfacePista ap;
 	private static Tecla[] tecArray;
 	public static Note[] noteArray;
 	
+
+	public Note[] getNoteArray() {
+		return noteArray;
+	}
 
 	public static Tecla getTecArray(int i) {
 		return tecArray[i];
@@ -30,7 +34,6 @@ public abstract class InterfacePista {
 			noteArray[i] = tecArray[i].getSonido();
 		}
 	}
-	protected abstract void evaluar(String tocada, Tecla sugerida) ;
 
 
 }

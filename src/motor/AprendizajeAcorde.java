@@ -4,11 +4,11 @@ import java.util.HashMap;
 
 public class AprendizajeAcorde extends InterfazAcorde {
 
-	private AprendizajeAcorde() {
-
+	private AprendizajeAcorde(int num) {
+		
 	}
 
-	public boolean Comparar(String[] acordeEstudiante) {
+	public boolean evaluar(String s,String[] acordeEstudiante) {
 		String[] acordeProfe = cancionString.get(indice);
 		HashMap<String, String> m = new HashMap<>();
 		boolean flag=false;
@@ -28,4 +28,9 @@ public class AprendizajeAcorde extends InterfazAcorde {
 		}
 		 return flag;
 	}
+	
+	
+	
+
+	
 }
