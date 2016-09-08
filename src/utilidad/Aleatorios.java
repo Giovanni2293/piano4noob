@@ -91,7 +91,6 @@ public class Aleatorios {
 		tecla = pitchATecla.get(numerico);
 		nota = teclaANota.get(tecla);
 		teclaRegresar = piano.getTecla(nota);
-		System.out.println(nota);
 		
 		return teclaRegresar;
 

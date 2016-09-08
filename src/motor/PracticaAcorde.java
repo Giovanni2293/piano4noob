@@ -2,10 +2,9 @@ package motor;
 
 import java.util.HashMap;
 
-public class AprendizajeAcorde extends InterfazAcorde {
+public class PracticaAcorde extends InterfazAcorde {
 
-	private AprendizajeAcorde() {
-
+	public PracticaAcorde() {
 	}
 
 	public boolean Comparar(String[] acordeEstudiante) {
@@ -16,16 +15,25 @@ public class AprendizajeAcorde extends InterfazAcorde {
 		if (acordeEstudiante != null) {
 			m.put("1", acordeEstudiante[0]);
 			m.put("2", acordeEstudiante[1]);
-			m.put("3", acordeEstudiante[2]);
+			m.put("3", acordeEstudiante[2]);//GS3,C4,DS4
 			if (m.containsValue(acordeProfe[0]) && m.containsValue(acordeProfe[1]) && m.containsValue(acordeProfe[2])) {// Entrada
-				indice++; // correcta
+				Puntuacion.acierto(); // correcta
 				flag=true;
 			} else {
+				Puntuacion.fallos();
 				flag=false;
 			}
 		} else {
-			flag=false;
+			Puntuacion.fallos();
+			flag=false;	
 		}
-		 return flag;
+		indice++;// Ignora los errores y avanza
+		return flag;
 	}
+
+	public void terminarDeEvaluar() {
+		super.terminarDeEvaluar();
+		Puntuacion.reset();
+	}
+
 }

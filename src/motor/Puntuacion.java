@@ -16,11 +16,13 @@ public class Puntuacion {
 	private static long score = 0;
 
 	public static void acierto() {
+		teclasPresionadas++;
 		aciertos++;
 		score = aciertos * 10 + score;
 	}
 
 	public static void fallos() {
+		teclasPresionadas++;
 		fallos++;
 	}
 

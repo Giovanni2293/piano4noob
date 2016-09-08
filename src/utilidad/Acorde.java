@@ -79,14 +79,12 @@ public class Acorde {
 		String[] acorde = new String[3];
 		Part acordeP;
 		int posicion = arreglo.indexOf(raiz);
-		System.out.println( arreglo.indexOf(raiz));
 		int desplazamiento = posicion + pos1;
 		int desTemp;
 	    if(desplazamiento>31)
 	    {
 	    	desplazamiento = desplazamiento-12;
 	    }
-	    System.out.println("desplazamiento1: " + desplazamiento);
 		acorde[0] = raiz;
 		acorde[1] = arreglo.get(desplazamiento);
 		desTemp = posicion+pos2;
@@ -95,7 +93,6 @@ public class Acorde {
 		{
 			desplazamiento = desTemp- 12;
 		}
-		System.out.println("desplazamiento2: " + desplazamiento);
 		acorde[2] = arreglo.get(desplazamiento);
 		return acorde;
 	}
