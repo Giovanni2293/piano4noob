@@ -21,10 +21,7 @@ public class Aleatorios {
 	}
 	
 	
-	public static void main(String[] args) {
-		Aleatorios a = new Aleatorios();
-		a.getRandomSeleccionAcorde();
-	}
+	
 	
 
 	/**
