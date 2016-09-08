@@ -8,7 +8,7 @@ public class PracticaPista extends InterfacePista {
 	}
 
 	public static void main(String[] args) {
-		ap = new AprendizajePista(50);
+		ap = new PracticaPista(50);
 		ap.evaluar("", getTecArray(0));
 		ap.evaluar(getTecArray(1).getNombreNatural(), getTecArray(1));
 		ap.evaluar("", getTecArray(2));
@@ -17,7 +17,7 @@ public class PracticaPista extends InterfacePista {
 
 	}
 
- /*	public void evaluar(String tocada, Tecla sugerida) {
+	public void evaluar(String tocada, Tecla sugerida) {
 
 		if (tocada.equals(sugerida.getNombreNatural())) {
 			System.out.println("bien");
@@ -30,6 +30,5 @@ public class PracticaPista extends InterfacePista {
 			System.out.println("por aqui tambien");
 			Puntuacion.fallos();
 		}
-	}*/
-
+	}
 }
