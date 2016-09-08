@@ -73,7 +73,7 @@ public class Aleatorios {
 	 * Devuelve la raiz del acorde de forma aleatoria
 	 * @return
 	 */
-	public String getRaizAleatoria()
+	private String getRaizAleatoria()
 	{
 		String tecla;
 		Tecla teclaAleatoria = getRandomTecla();

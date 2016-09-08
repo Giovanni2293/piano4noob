@@ -58,9 +58,9 @@ public class Acorde {
 	 * @param a (Arreglo de tamaño 3 con las 3 notas del acorde)
 	 * @return Part (Parte a reproducirse mediante Play.midi)
 	 */
-	private static Part obtenerPiezaMusical(String[] a)
+	public static CPhrase obtenerPiezaMusical(String[] a)
 	{
-		Part p = new Part();
+		CPhrase acorde = new CPhrase();
 		if (a.length==3)
 		{
 		Piano piano = Piano.getPiano();
@@ -68,11 +68,9 @@ public class Acorde {
 		notas[0] = piano.getTecla(a[0]).getSonido();
 		notas[1] = piano.getTecla(a[1]).getSonido();
 		notas[2] = piano.getTecla(a[2]).getSonido();
-		CPhrase acorde = new CPhrase();
 		acorde.addChord(notas);
-		p.addCPhrase(acorde);
 		}
-		return p;
+		return acorde;
 		
 	}
 	
@@ -99,11 +97,6 @@ public class Acorde {
 		}
 		System.out.println("desplazamiento2: " + desplazamiento);
 		acorde[2] = arreglo.get(desplazamiento);
-		acordeP=obtenerPiezaMusical(acorde);
-		System.out.println(acorde[0]);
-		System.out.println(acorde[1]);
-		System.out.println(acorde[2]);
-		r.reproducirParte(acordeP);
 		return acorde;
 	}
 
