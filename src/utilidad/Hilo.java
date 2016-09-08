@@ -52,7 +52,7 @@ public class Hilo extends Thread {
 	 */
 	private void pause() {
 		try {
-			Thread.sleep(1000); // pause for 1000 milliseconds (1 second)
+			Thread.sleep(500); // pause for 1000 milliseconds (1 second)
 		} catch (InterruptedException exc) {
 		}
 	}
