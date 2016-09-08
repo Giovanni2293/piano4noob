@@ -6,11 +6,13 @@ package utilidad;
 
 import java.awt.Color;
 
+import com.sun.corba.se.impl.ior.GenericTaggedComponent;
+
 import jm.music.data.Note;
 import jm.util.Play;
 import motor.Reproduccion;
 
-public class Temporalizador {
+public class Tutor {
 
 	/*
 	 * status se encarga de mantener con vida el hilo y step es el numero de
@@ -22,14 +24,28 @@ public class Temporalizador {
 	private Note[] n;
 	private Traductor tr = new Traductor();
 	private Hilo hilo;
+	private static boolean creado;
 
 	private BotonTecla[] Teclas = new BotonTecla[31];
+	
 
-	public Temporalizador(Note[] n, BotonTecla[] t) {
+	public Tutor(Note[] n, BotonTecla[] t) {
 		super();
 		this.n = n;
+		creado = true;
 		Teclas = t;
+		hilo = new Hilo(this);
+		
+		step = 0;
 
+	}
+
+	public static boolean getCreado() {
+		return creado;
+	}
+
+	public static void setCreado(boolean b) {
+		creado = b;
 	}
 
 	/**
@@ -38,8 +54,7 @@ public class Temporalizador {
 
 	public void iniciar() {
 		status = true;
-		hilo = Hilo.getHilo(this);
-		step = 0;
+
 	}
 
 	/**
@@ -56,19 +71,21 @@ public class Temporalizador {
 				hilo.pause();
 				t.setBackground(new Color(116, 171, 245));
 				System.out.println(step + " : " + s2);
-				
+
 				Play.midiCycle(n[step]);
 				Play.stopMidiCycle();
 				hilo.pause();
-				
+
 				if (t.getText().length() > 2)
 					t.setBackground(Color.black);
 				else
 					t.setBackground(Color.WHITE);
 			}
 		}
+		
 		step++;
 		if (step >= n.length) {
+
 			detener();
 
 		}
@@ -86,7 +103,7 @@ public class Temporalizador {
 	/**
 	 * Detiene la ejecucion del hilo
 	 */
-	private void detener() {
+	public void detener() {
 		status = false;
 
 	}
@@ -99,15 +116,25 @@ public class Temporalizador {
 	public int getStep() {
 		return step;
 	}
-	
-	public void aumentarVelocidad(int multiplicador){
+
+	public void aumentarVelocidad(int multiplicador) {
 		int actual;
 		actual = hilo.getVelocidad();
 		hilo.setVelocidad(actual * multiplicador);
 	}
-	public void disminuirVelicidad(int divisor){
+
+	public void disminuirVelicidad(int divisor) {
 		int actual;
 		actual = hilo.getVelocidad();
-		hilo.setVelocidad((int)(actual / divisor) );
+		hilo.setVelocidad((int) (actual / divisor));
 	}
+
+	public  void pausarHilo() {
+	hilo.pausarHilo();
+		
+	}
+	public  void reanudar(){
+		hilo.reanudarHilo();
+	}
+
 }

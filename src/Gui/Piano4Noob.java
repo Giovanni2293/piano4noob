@@ -25,7 +25,7 @@ import motor.Reproduccion;
 import utilidad.BotonTecla;
 import utilidad.Hilo;
 import utilidad.STecla;
-import utilidad.Temporalizador;
+import utilidad.Tutor;
 import utilidad.Traductor;
 import utilidad.UbicarTeclas;
 
@@ -66,6 +66,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
 
 public class Piano4Noob implements KeyListener, MouseListener {
 
@@ -89,6 +90,20 @@ public class Piano4Noob implements KeyListener, MouseListener {
 	private static JFileChooser fileChooser = new JFileChooser("src\\multimedia");
 	JLabel lblFileSelect; // etiqueta con el nombre de la pista
 	Note[] allSongNotes;
+	
+	//Control de reproduccion
+	private boolean detenido;
+	
+	private Tutor temp; // implementa un observer que tiene un hilo
+									// para darle vida al
+	// tutor
+
+	private Note[] notasFullSong;
+
+	// Dimensiones
+	private int anchoPanelTeclas;
+	private int anchoDePantalla;
+	private int anchoParaBotones;
 
 	/**
 	 * Launch the application.
@@ -114,26 +129,32 @@ public class Piano4Noob implements KeyListener, MouseListener {
 	public Piano4Noob() {
 		initialize();
 		frmPianonoobs.setLocationRelativeTo(null);
+
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		t = Toolkit.getDefaultToolkit();
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+		anchoDePantalla = (int) screenSize.getWidth() - 50;
+		anchoPanelTeclas = anchoDePantalla - 40;
+		anchoParaBotones = (anchoDePantalla - 40) / 19;
+
 		r = Reproduccion.getRepro(); // Devuelve un objeto unico de tipo
 										// Reproduccion
-		int anchoPanelTeclas;
-		int anchoDePantalla;
+		guiTeclado = new UbicarTeclas(anchoParaBotones, 235, this);
+		Teclas = new BotonTecla[31];
+		Teclas = guiTeclado.getArPiano();
+
 		stec = new STecla();
 		frmPianonoobs = new JFrame();
 		frmPianonoobs.setTitle("Piano4Noobs");
 		frmPianonoobs.setAutoRequestFocus(false);
 		frmPianonoobs.setResizable(false);
-		t = Toolkit.getDefaultToolkit();
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		anchoDePantalla = (int) screenSize.getWidth() - 50;
 
-		anchoPanelTeclas = anchoDePantalla - 40;
 		frmPianonoobs.addKeyListener(this);// Le asocia el Escuchador de eventos
 											// de
 		// teclados a la ventana
@@ -150,6 +171,51 @@ public class Piano4Noob implements KeyListener, MouseListener {
 
 		JMenuItem abrir = new JMenuItem("Abrir");
 		Archivo.add(abrir);
+
+		JMenu Reproduccin = new JMenu("Reproducci\u00F3n");
+		menuBar.add(Reproduccin);
+		
+		JMenuItem Reanudar = new JMenuItem("Reanudar");
+		Reanudar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+				temp.reanudar();
+			}
+		});
+		Reproduccin.add(Reanudar);
+				
+				JMenuItem Pausar = new JMenuItem("Pausar");
+				Pausar.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mousePressed(MouseEvent e) {
+						temp.pausarHilo();
+					}
+				});
+				Reproduccin.add(Pausar);
+		
+				JMenuItem detenerPista = new JMenuItem("Detener Pista");
+				Reproduccin.add(detenerPista);
+				detenerPista.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mousePressed(MouseEvent e) {
+						if (temp != null) {
+							temp.setCreado(false);
+							temp.detener();
+							
+							
+						}else if(detenido == true){
+							JOptionPane.showMessageDialog(null, "La pista ya esta detenida");
+							
+						}else{
+							JOptionPane.showMessageDialog(null, "Es necesario cargar una pista"
+									+ "\n antes de intentar detenerla");
+									
+									 }
+
+						}
+					}
+				);
 
 		JPanel panelContenedor = new JPanel();
 		frmPianonoobs.getContentPane().add(panelContenedor);
@@ -180,6 +246,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		lblVelocidad.setBorder(new EmptyBorder(5, 10, 5, 10));
 
 		JSlider slider = new JSlider();
+		slider.setMaximum(3);
 		slider.setBorder(new EmptyBorder(0, 5, 0, 5));
 		slider.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		panelIntVelocidad.add(slider);
@@ -202,9 +269,19 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		JButton BrowseFile = new JButton("...");
 		BrowseFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				
 				File fil = openFile();
 				allSongNotes = desglosarPista(fil);
+				if(Tutor.getCreado()== false){
+				temp = new Tutor(allSongNotes, Teclas);
+				temp.iniciar();
+				}else{ 
+					JOptionPane.showMessageDialog(null, "Debe detener primero la pista para poder cargar una nueva\n"
+							+ "para detener la pista use el menu Reproducción, luego detener");
+
+				}	
+					
+				
 
 			}
 		});
@@ -302,14 +379,9 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		panelDeTeclado.add(bordeDerecho);
 
 		// Tamaño para botones // Apartir de aquí agregar botones
-		int anchoParaBotones = (anchoDePantalla - 40) / 19;
 
-		guiTeclado = new UbicarTeclas(anchoParaBotones, 235, this);
-		Teclas = new BotonTecla[31];
-		Teclas = guiTeclado.getArPiano();
-		// for (int i = 31; 0 <= i; i--) {
 		for (int i = 31; 0 <= i; i--) {
-
+			// for (int i = 31; 0 <= i; i--) {
 			if (i <= 18) {
 				blancas.add(Teclas[i]);
 			} else {
@@ -474,19 +546,20 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		lblFileSelect.setText(selectedFile.getName().substring(0, index));
 		return selectedFile;
 	}
-	public  Note[] desglosarPista(File selectedFile) {
+
+	public Note[] desglosarPista(File selectedFile) {
 		Score sco = Read.midiOrJmWithNoMessaging(selectedFile);
-		
-		Note[] notasFullSong = null;
+
+		notasFullSong = null;
 		int tamPart, tamPhr, tamNota;
 		tamPart = sco.getSize();
 		Part[] partes = new Part[tamPart];
 		partes = sco.getPartArray();
-		
+
 		ArrayList<Note> notasCancion = new ArrayList<Note>();
 		int numeroNotas = 0;
 		for (int i = 0; i < partes.length; i++) {
-			
+
 			if (partes[i].getInstrument() == 0) {
 				tamPhr = partes[i].getSize();
 				Phrase[] ph = new Phrase[tamPhr];
@@ -508,24 +581,7 @@ public class Piano4Noob implements KeyListener, MouseListener {
 			notasFullSong[i] = notasCancion.get(i);
 
 		}
-		// notasCancion.toArray(notasFullSong);
 
-		//Phrase p = new Phrase(notasFullSong);
-		//Score sco2 = new Score(new Part(p));
-		
-		//Play.midiCycle(sco);
-		//Play.stopMidiCycle();
-		 /*
-		  * 
-		  */
-		Temporalizador temp = new Temporalizador(notasFullSong,Teclas);
-		temp.iniciar();
-		 			
-					 
-			
-			
-		
 		return notasFullSong;
 	}
-
 }

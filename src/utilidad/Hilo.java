@@ -3,13 +3,14 @@
 
 package utilidad;
 
+import java.util.Date;
 
 public class Hilo extends Thread {
     /*
      * se crean dos objetos colaboradores. Mediador que se encarga de contener la logica que se ejecutara en el hilo y el hilo necesario para singleton
      */
-	private  Temporalizador m;
-	private static  Hilo h;
+	private  Tutor m;
+	private boolean pause;
 	private int velocidad;
 
 	
@@ -18,7 +19,7 @@ public class Hilo extends Thread {
  * la logica de corrida del hilo y se define con nombre Coor. Finalmente se inicializa.
  * @param m
  */
-	private Hilo(Temporalizador m ) {
+	public Hilo(Tutor m ) {
 		super("Coor");
 		this.m = m;
 		this.start();
@@ -30,23 +31,35 @@ public class Hilo extends Thread {
  * @param m
  * @return h Hilo en ejecucion
  */
-	public static Hilo getHilo(Temporalizador m) {
-		if(h == null){
-			h = new Hilo(m);
-		}
-		return h;
-		
-	}
+	
+
 
 	/**
 	 * Metodo encargado de la ejecucion del hilo
 	 */
 	public void run() {
+		Date t0 = new Date();
 		while (m.getStatus()) {
+			try {
+				synchronized (this) {
+					if (pause) {
+						System.out.println("Paused");
+						wait();
+						System.out.println("Resumed");
+					}
+				}
+				long secs = ((new Date()).getTime() - t0.getTime()) / 1000;
+				System.out.println(secs);
+				
+			} catch (InterruptedException ex) {
+				System.err.println(ex);
+			}
 			m.step();
-			//pause();
+			
 		}
-	}
+		// pause();
+		}
+	
 
 	/**
 	 * Temporizador que permite simular el paso del tiempo.
@@ -55,7 +68,8 @@ public class Hilo extends Thread {
 	public void pause() {
 		try {
 			
-			Thread.sleep(velocidad); // pause for 1000 milliseconds (1 second)
+			Thread.sleep(velocidad);
+			// pause for 1000 milliseconds (1 second)
 		} catch (InterruptedException exc) {
 		}
 	}
@@ -66,5 +80,14 @@ public class Hilo extends Thread {
 	public int getVelocidad(){
 		return velocidad;
 	}
-
+	public synchronized void pausarHilo() {
+		pause = true;
+		}
+			
+	
+	public synchronized void reanudarHilo() {
+		pause= false;
+		notify();
+		}
+	
 }
