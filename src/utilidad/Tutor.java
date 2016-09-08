@@ -118,15 +118,15 @@ public class Tutor {
 	}
 
 	public void aumentarVelocidad(int multiplicador) {
-		int actual;
-		actual = hilo.getVelocidad();
-		hilo.setVelocidad(actual * multiplicador);
+		int base;
+		base = 500;
+		hilo.setVelocidad(base * multiplicador);
 	}
 
 	public void disminuirVelicidad(int divisor) {
-		int actual;
-		actual = hilo.getVelocidad();
-		hilo.setVelocidad((int) (actual / divisor));
+		int base;
+		base = 500;
+		hilo.setVelocidad((int) (base / divisor));
 	}
 
 	public  void pausarHilo() {

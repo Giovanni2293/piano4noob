@@ -67,6 +67,8 @@ import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class Piano4Noob implements KeyListener, MouseListener {
 
@@ -90,12 +92,12 @@ public class Piano4Noob implements KeyListener, MouseListener {
 	private static JFileChooser fileChooser = new JFileChooser("src\\multimedia");
 	JLabel lblFileSelect; // etiqueta con el nombre de la pista
 	Note[] allSongNotes;
-	
-	//Control de reproduccion
+
+	// Control de reproduccion
 	private boolean detenido;
-	
+
 	private Tutor temp; // implementa un observer que tiene un hilo
-									// para darle vida al
+						// para darle vida al
 	// tutor
 
 	private Note[] notasFullSong;
@@ -174,48 +176,46 @@ public class Piano4Noob implements KeyListener, MouseListener {
 
 		JMenu Reproduccin = new JMenu("Reproducci\u00F3n");
 		menuBar.add(Reproduccin);
-		
-		JMenuItem Reanudar = new JMenuItem("Reanudar");
-		Reanudar.addMouseListener(new MouseAdapter() {
+
+		JMenuItem reanudar = new JMenuItem("Reanudar");
+		reanudar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				
+
 				temp.reanudar();
 			}
 		});
-		Reproduccin.add(Reanudar);
-				
-				JMenuItem Pausar = new JMenuItem("Pausar");
-				Pausar.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mousePressed(MouseEvent e) {
-						temp.pausarHilo();
-					}
-				});
-				Reproduccin.add(Pausar);
-		
-				JMenuItem detenerPista = new JMenuItem("Detener Pista");
-				Reproduccin.add(detenerPista);
-				detenerPista.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mousePressed(MouseEvent e) {
-						if (temp != null) {
-							temp.setCreado(false);
-							temp.detener();
-							
-							
-						}else if(detenido == true){
-							JOptionPane.showMessageDialog(null, "La pista ya esta detenida");
-							
-						}else{
-							JOptionPane.showMessageDialog(null, "Es necesario cargar una pista"
-									+ "\n antes de intentar detenerla");
-									
-									 }
+		Reproduccin.add(reanudar);
 
-						}
-					}
-				);
+		JMenuItem pausar = new JMenuItem("Pausar");
+		pausar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				temp.pausarHilo();
+			}
+		});
+		Reproduccin.add(pausar);
+
+		JMenuItem detenerPista = new JMenuItem("Detener Pista");
+		Reproduccin.add(detenerPista);
+		detenerPista.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (temp != null) {
+					temp.setCreado(false);
+					temp.detener();
+
+				} else if (detenido == true) {
+					JOptionPane.showMessageDialog(null, "La pista ya esta detenida");
+
+				} else {
+					JOptionPane.showMessageDialog(null,
+							"Es necesario cargar una pista" + "\n antes de intentar detenerla");
+
+				}
+
+			}
+		});
 
 		JPanel panelContenedor = new JPanel();
 		frmPianonoobs.getContentPane().add(panelContenedor);
@@ -245,11 +245,33 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		panelIntVelocidad.add(lblVelocidad);
 		lblVelocidad.setBorder(new EmptyBorder(5, 10, 5, 10));
 
-		JSlider slider = new JSlider();
-		slider.setMaximum(3);
-		slider.setBorder(new EmptyBorder(0, 5, 0, 5));
-		slider.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		panelIntVelocidad.add(slider);
+		final JSlider velocidad = new JSlider();
+		velocidad.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				int valor = velocidad.getValue();
+				if (Tutor.getCreado() == true) {
+					if (valor == 0) {
+						temp.aumentarVelocidad(3);
+					} else if (valor == 1) {
+						temp.aumentarVelocidad(2);
+					} else if (valor == 2) {
+
+						temp.aumentarVelocidad(1);
+
+					} else if (valor == 3) {
+						temp.disminuirVelicidad(2);
+					} else {
+						temp.disminuirVelicidad(3);
+					}
+				}
+
+			}
+		});
+		velocidad.setValue(2);
+		velocidad.setMaximum(4);
+		velocidad.setBorder(new EmptyBorder(0, 5, 0, 5));
+		velocidad.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		panelIntVelocidad.add(velocidad);
 
 		JPanel panelIntPista = new JPanel();
 		panelDificultad.add(panelIntPista);
@@ -269,19 +291,18 @@ public class Piano4Noob implements KeyListener, MouseListener {
 		JButton BrowseFile = new JButton("...");
 		BrowseFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				File fil = openFile();
 				allSongNotes = desglosarPista(fil);
-				if(Tutor.getCreado()== false){
-				temp = new Tutor(allSongNotes, Teclas);
-				temp.iniciar();
-				}else{ 
+				if (Tutor.getCreado() == false) {
+					temp = new Tutor(allSongNotes, Teclas);
+					temp.iniciar();
+				} else {
+
 					JOptionPane.showMessageDialog(null, "Debe detener primero la pista para poder cargar una nueva\n"
 							+ "para detener la pista use el menu Reproducción, luego detener");
 
-				}	
-					
-				
+				}
 
 			}
 		});

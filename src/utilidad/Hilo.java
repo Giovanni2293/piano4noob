@@ -77,9 +77,7 @@ public class Hilo extends Thread {
 	public void setVelocidad(int vel){
 		velocidad = vel;
 	}
-	public int getVelocidad(){
-		return velocidad;
-	}
+	
 	public synchronized void pausarHilo() {
 		pause = true;
 		}
